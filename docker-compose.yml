@@ -1,0 +1,21 @@
+# Services locaux OPTIONNELS. Sans Docker, l'API utilise PGlite (PostgreSQL embarqué) automatiquement.
+# Usage : docker compose up -d  puis  DATABASE_URL=postgres://waka:waka_dev_only@localhost:5432/waka
+services:
+  postgres:
+    image: postgis/postgis:16-3.4
+    environment:
+      POSTGRES_USER: waka
+      POSTGRES_PASSWORD: waka_dev_only   # développement uniquement — jamais en production
+      POSTGRES_DB: waka
+    ports: ["5432:5432"]
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U waka -d waka"]
+      interval: 5s
+      retries: 10
+  redis:
+    # Réservé à l'adaptateur BullMQ (étape suivante, voir docs/DECISIONS.md ADR-004)
+    image: redis:7-alpine
+    ports: ["6379:6379"]
+volumes:
+  pgdata:

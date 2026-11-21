@@ -1,0 +1,99 @@
+@import "tailwindcss";
+
+/*
+ * Waka Contrôle — palette produit « confiance chaleureuse », déclinée en console :
+ * texte et boutons verts en #0B7A70 (contraste AA ≥ 4.5 sur blanc), #0E8F83 réservé aux accents.
+ */
+@theme {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-manrope), var(--font-inter), ui-sans-serif, sans-serif;
+  --font-mono: ui-monospace, "Cascadia Mono", "SFMono-Regular", Menlo, monospace;
+
+  --color-night: #142436;
+  --color-night-900: #0F1C2B;
+  --color-night-800: #1B2F45;
+  --color-night-700: #26405C;
+  --color-night-300: #9AAEC2;
+  --color-night-200: #C5D2DF;
+
+  --color-brand: #0E8F83;
+  --color-brand-strong: #0B7A70;
+  --color-brand-deep: #08594F;
+  --color-brand-soft: #E2F2EF;
+
+  --color-amber: #F5B942;
+  --color-amber-soft: #FDF2D8;
+  --color-amber-ink: #7A4D00;
+
+  --color-ivory: #F8FAF8;
+  --color-surface: #FFFFFF;
+  --color-muted: #F1F4F2;
+  --color-line: #E2E7E5;
+  --color-line-strong: #CCD5D2;
+  --color-ink: #52606D;
+  --color-ink-soft: #6B7884;
+  --color-text: #142436;
+
+  --color-danger: #B42318;
+  --color-danger-soft: #FDEEEC;
+  --color-info: #1D5FA8;
+  --color-info-soft: #E9F1FB;
+  --color-violet: #5B3FA8;
+  --color-violet-soft: #F0ECFA;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    background: var(--color-ivory);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    font-feature-settings: "cv11", "ss01", "tnum";
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    letter-spacing: -0.01em;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-brand-strong);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  .on-dark :focus-visible {
+    outline-color: var(--color-amber);
+  }
+  ::selection {
+    background: var(--color-brand-soft);
+  }
+}
+
+@layer components {
+  .tnum {
+    font-variant-numeric: tabular-nums;
+  }
+  .skeleton {
+    background: linear-gradient(90deg, var(--color-muted) 0%, #e8ecea 50%, var(--color-muted) 100%);
+    background-size: 200% 100%;
+    animation: shimmer 1.4s ease-in-out infinite;
+    border-radius: 6px;
+  }
+  .data-table th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: var(--color-muted);
+  }
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton { animation: none; }
+  * { transition-duration: 0ms !important; animation-duration: 0ms !important; }
+}

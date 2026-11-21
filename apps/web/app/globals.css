@@ -1,0 +1,192 @@
+@import 'tailwindcss';
+
+/*
+ * Waka — « confiance chaleureuse ».
+ * Contraste vérifié (WCAG AA) : le vert de marque #0E8F83 n’est utilisé en texte que sur fond nuit ;
+ * sur fond ivoire, le texte vert utilise green-600 (#0B7A70, 4,9:1) ou green-700.
+ */
+@theme {
+  --font-display: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  --color-night-950: #0b1622;
+  --color-night-900: #142436;
+  --color-night-800: #1c3248;
+  --color-night-700: #27425d;
+  --color-night-600: #375674;
+  --color-night-300: #9fb3c7;
+  --color-night-200: #c9d6e2;
+
+  --color-green-50: #e8f6f4;
+  --color-green-100: #cdebe6;
+  --color-green-200: #a3dad2;
+  --color-green-300: #6cc5bb;
+  --color-green-400: #2fa99c;
+  --color-green-500: #0e8f83;
+  --color-green-600: #0b7a70;
+  --color-green-700: #09655d;
+  --color-green-900: #053b37;
+
+  --color-amber-50: #fef7e6;
+  --color-amber-100: #fdecc4;
+  --color-amber-200: #fadc94;
+  --color-amber-300: #f8cd6c;
+  --color-amber-400: #f5b942;
+  --color-amber-500: #e3a21f;
+  --color-amber-700: #8a5d06;
+  --color-amber-800: #6b4805;
+
+  --color-ivory: #f8faf8;
+  --color-sand: #f1efe7;
+  --color-line: #e3e8e4;
+  --color-ink: #52606d;
+  --color-ink-soft: #66737f;
+
+  --color-danger: #b42318;
+  --color-danger-50: #fef3f2;
+  --color-danger-100: #fee4e2;
+
+  --radius-xl2: 1.25rem;
+  --radius-xl3: 1.75rem;
+
+  --shadow-card: 0 1px 2px rgb(20 36 54 / 0.04), 0 8px 24px -12px rgb(20 36 54 / 0.12);
+  --shadow-lift: 0 2px 4px rgb(20 36 54 / 0.05), 0 18px 40px -18px rgb(20 36 54 / 0.28);
+  --shadow-glow: 0 0 0 1px rgb(245 185 66 / 0.35), 0 12px 40px -12px rgb(245 185 66 / 0.45);
+
+  --animate-fade-up: fade-up 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  --animate-draw: draw 2.4s cubic-bezier(0.6, 0.1, 0.2, 1) both;
+  --animate-pulse-soft: pulse-soft 2s ease-in-out infinite;
+  --animate-shimmer: shimmer 1.6s linear infinite;
+  --animate-travel: travel 6s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes draw {
+    from { stroke-dashoffset: var(--len, 1000); }
+    to { stroke-dashoffset: 0; }
+  }
+  @keyframes pulse-soft {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.55; transform: scale(0.92); }
+  }
+  @keyframes shimmer {
+    from { background-position: -200% 0; }
+    to { background-position: 200% 0; }
+  }
+  @keyframes travel {
+    0% { offset-distance: 0%; }
+    100% { offset-distance: 100%; }
+  }
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    scroll-behavior: smooth;
+  }
+  body {
+    background: var(--color-ivory);
+    color: var(--color-night-900);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: transparent;
+    overflow-x: hidden;
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-amber-200); color: var(--color-night-900); }
+
+  /* Anneau de focus ambre doublé de nuit : visible sur fond clair ET sombre (WCAG 2.2 — 2.4.11). */
+  :focus-visible {
+    outline: 3px solid var(--color-amber-400);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 2px var(--color-night-900);
+    border-radius: 0.5rem;
+  }
+  [hidden] { display: none !important; }
+  input[type='date']::-webkit-calendar-picker-indicator,
+  input[type='time']::-webkit-calendar-picker-indicator { opacity: 0.6; cursor: pointer; }
+}
+
+@layer components {
+  .container-w { width: 100%; max-width: 72rem; margin-inline: auto; padding-inline: 1rem; }
+  @media (min-width: 640px) { .container-w { padding-inline: 1.5rem; } }
+
+  .eyebrow {
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .tabular { font-variant-numeric: tabular-nums; }
+
+  .skeleton {
+    background: linear-gradient(90deg, #e9eeea 0%, #f4f7f4 40%, #e9eeea 80%);
+    background-size: 200% 100%;
+    animation: var(--animate-shimmer);
+    border-radius: 0.75rem;
+  }
+
+  /* Texture géométrique inspirée des motifs Ndop / toghu — abstraite, non copiée. */
+  .pattern-ndop {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Cg fill='none' stroke='%23F5B942' stroke-opacity='.14' stroke-width='1.5'%3E%3Cpath d='M0 24 L12 12 L24 24 L12 36Z M24 24 L36 12 L48 24 L36 36Z'/%3E%3Ccircle cx='12' cy='24' r='2.5'/%3E%3Ccircle cx='36' cy='24' r='2.5'/%3E%3Cpath d='M0 0 H48 M0 48 H48' stroke-dasharray='3 5'/%3E%3C/g%3E%3C/svg%3E");
+  }
+  .pattern-ndop-light {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Cg fill='none' stroke='%230E8F83' stroke-opacity='.09' stroke-width='1.5'%3E%3Cpath d='M0 24 L12 12 L24 24 L12 36Z M24 24 L36 12 L48 24 L36 36Z'/%3E%3Ccircle cx='12' cy='24' r='2.5'/%3E%3Ccircle cx='36' cy='24' r='2.5'/%3E%3C/g%3E%3C/svg%3E");
+  }
+  .pattern-dots {
+    background-image: radial-gradient(rgb(245 185 66 / 0.18) 1px, transparent 1px);
+    background-size: 18px 18px;
+  }
+
+  /* Dentelure du ticket (style carte d’embarquement). */
+  .ticket-notch {
+    --notch: 14px;
+    mask:
+      radial-gradient(circle var(--notch) at 0 var(--notch-y, 62%), transparent 98%, #000) left / 51% 100% no-repeat,
+      radial-gradient(circle var(--notch) at 100% var(--notch-y, 62%), transparent 98%, #000) right / 51% 100% no-repeat;
+  }
+
+  .route-draw {
+    stroke-dasharray: var(--len, 1000);
+    animation: var(--animate-draw);
+  }
+
+  .safe-bottom { padding-bottom: calc(env(safe-area-inset-bottom) + 4.5rem); }
+  @media (min-width: 768px) { .safe-bottom { padding-bottom: 0; } }
+}
+
+@keyframes grow-x {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+@keyframes grow-y {
+  from { transform: scaleY(0); }
+  to { transform: scaleY(1); }
+}
+@keyframes ring-fill {
+  from { stroke-dashoffset: var(--circ, 300); }
+}
+@keyframes ticker {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-delay: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .route-draw { stroke-dashoffset: 0 !important; }
+}

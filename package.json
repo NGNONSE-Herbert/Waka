@@ -1,0 +1,31 @@
+{
+  "name": "waka-cameroun",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Waka — covoiturage interurbain Cameroun (monorepo MVP, paiements MOCK/SANDBOX uniquement)",
+  "packageManager": "pnpm@10.13.1",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "turbo run dev --parallel",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "test:e2e": "turbo run test:e2e",
+    "db:seed": "pnpm --filter @waka/api db:seed"
+  },
+  "devDependencies": {
+    "turbo": "^2.5.0",
+    "typescript": "^5.8.3"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "sharp",
+      "@tailwindcss/oxide",
+      "@swc/core"
+    ]
+  }
+}

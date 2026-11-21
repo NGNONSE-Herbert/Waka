@@ -1,0 +1,36 @@
+name: CI
+on:
+  push: { branches: [main] }
+  pull_request:
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgis/postgis:16-3.4
+        env: { POSTGRES_USER: waka, POSTGRES_PASSWORD: waka_ci, POSTGRES_DB: waka_test }
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U waka" --health-interval 5s --health-retries 10
+    env:
+      NODE_ENV: test
+      PAYMENT_PROVIDER: mock
+      MOCK_PSP_WEBHOOK_SECRET: ci-only-secret
+      # Active les tests de concurrence sur un vrai PostgreSQL multi-connexions
+      TEST_DATABASE_URL: postgres://waka:waka_ci@localhost:5432/waka_test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 24, cache: pnpm }
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm test
+      - run: pnpm build
+      - name: Audit des dépendances
+        run: pnpm audit --prod --audit-level high
+        continue-on-error: true
+      - name: Recherche de secrets
+        uses: gitleaks/gitleaks-action@v2
+        env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
