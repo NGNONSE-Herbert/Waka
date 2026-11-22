@@ -24,13 +24,11 @@ export async function GET(_req: Request, ctx: { params: Promise<{ file: string }
   const inner = Math.round(size * (1 - pad * 2));
   return new ImageResponse(
     (
-      <div style={{ width: size, height: size, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#142436' }}>
-        <svg width={inner} height={inner} viewBox="0 0 48 48">
-          <rect width="48" height="48" rx={pad > 0 ? 0 : 14} fill="#142436" />
-          <path d="M15 27.5c8 0 7.5-9 18-9" fill="none" stroke="#0E8F83" strokeWidth="5.5" strokeLinecap="round" />
-          <path d="M15 27.5c8 0 7.5-9 18-9" fill="none" stroke="#F5B942" strokeWidth="1.6" strokeLinecap="round" strokeDasharray="2.2 2.8" />
-          <path d="M8.5 15.5a2.5 2.5 0 0 1 5 0v9h3.5a2.5 2.5 0 0 1 0 5h-6a2.5 2.5 0 0 1-2.5-2.5z" fill="#F8FAF8" />
-          <path d="M39.5 32.5a2.5 2.5 0 0 1-5 0v-9H31a2.5 2.5 0 0 1 0-5h6a2.5 2.5 0 0 1 2.5 2.5z" fill="#F5B942" />
+      <div style={{ width: size, height: size, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#0B1F17' }}>
+        <svg width={inner} height={inner} viewBox="0 0 38 38">
+          <path d="M11 26 C11 16 27 22 27 12" stroke="#D9F27B" strokeWidth="3" strokeLinecap="round" fill="none" />
+          <circle cx="11" cy="26" r="3.4" fill="#D9F27B" />
+          <circle cx="27" cy="12" r="3.4" fill="#D9F27B" />
         </svg>
       </div>
     ),

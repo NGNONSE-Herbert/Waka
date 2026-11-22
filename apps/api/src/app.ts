@@ -20,10 +20,12 @@ import { currentRequestId, JsonLogger } from './common/logger.js';
 import { CONFIG, DATABASE, JOB_QUEUE, LOGGER, PAYMENT_PROVIDERS } from './common/tokens.js';
 import { ViewsService } from './common/views.service.js';
 import { AdminAuthController, AdminController, DevController, WebhooksController } from './controllers/admin.controller.js';
+import { MessagingController } from './controllers/messaging.controller.js';
 import { AuthController, BookingsController, DriverController, HealthController, TripsController } from './controllers/public.controller.js';
 import { DisputesService } from './disputes/disputes.service.js';
 import { DriverService } from './driver/driver.service.js';
 import { LedgerService } from './ledger/ledger.service.js';
+import { MessagingService } from './messaging/messaging.service.js';
 import { NotificationsService } from './outbox/notifications.service.js';
 import { OutboxQueue, OutboxWorker } from './outbox/outbox.js';
 import { createProviderRegistry, type ProviderRegistry } from './payments/providers.js';
@@ -48,7 +50,7 @@ function buildModule(config: AppConfig, database: Database, logger: JsonLogger, 
   const devControllers = !config.isProduction && providers.mock ? [DevController] : [];
   return {
     module: WakaModule,
-    controllers: [HealthController, AuthController, TripsController, DriverController, BookingsController, WebhooksController, AdminAuthController, AdminController, ...devControllers],
+    controllers: [HealthController, AuthController, TripsController, DriverController, BookingsController, MessagingController, WebhooksController, AdminAuthController, AdminController, ...devControllers],
     providers: [
       { provide: CONFIG, useValue: config },
       { provide: DATABASE, useValue: database },
@@ -69,6 +71,7 @@ function buildModule(config: AppConfig, database: Database, logger: JsonLogger, 
       TripsService,
       DriverService,
       DisputesService,
+      MessagingService,
       AdminService,
     ],
   };

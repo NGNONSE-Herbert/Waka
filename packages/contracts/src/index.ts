@@ -364,6 +364,30 @@ export const PoliciesOutput = z.object({
   paymentProvider: z.object({ id: z.string(), mode: z.string(), capabilities: z.record(z.unknown()) }),
 });
 
+// ─── Messagerie et notifications ──────────────────────────────────────────────
+export const SendMessageInput = z.object({ text: z.string().trim().min(1).max(500) }).strict();
+export const MessageOutput = z.object({ id: z.string(), text: z.string(), mine: z.boolean(), createdAt: IsoDateTime });
+export type MessageOutput = z.infer<typeof MessageOutput>;
+export const MessageThreadOutput = z.object({
+  items: z.array(MessageOutput),
+  canSend: z.boolean(),
+  otherParty: z.object({ displayName: z.string() }),
+});
+export type MessageThreadOutput = z.infer<typeof MessageThreadOutput>;
+export const NotificationOutput = z.object({
+  id: z.string(),
+  template: z.string(),
+  text: z.string(),
+  route: z.string().nullable(),
+  amount: z.number().nullable(),
+  bookingId: z.string().nullable(),
+  readAt: IsoDateTime.nullable(),
+  createdAt: IsoDateTime,
+});
+export type NotificationOutput = z.infer<typeof NotificationOutput>;
+export const NotificationsOutput = z.object({ items: z.array(NotificationOutput), unread: z.number() });
+export type NotificationsOutput = z.infer<typeof NotificationsOutput>;
+
 // ─── Admin ─────────────────────────────────────────────────────────────────────
 export const DisputeDecisionInput = z.object({
   refundToPassenger: z.number().int().min(0),
@@ -398,6 +422,8 @@ export const ROUTES = {
     dispute: 'POST /v1/bookings/:id/disputes', review: 'POST /v1/bookings/:id/reviews',
   },
   disputes: { detail: 'GET /v1/disputes/:id', evidence: 'POST /v1/disputes/:id/evidence', appeal: 'POST /v1/disputes/:id/appeal' },
+  messages: { thread: 'GET /v1/bookings/:id/messages', send: 'POST /v1/bookings/:id/messages' },
+  notifications: { list: 'GET /v1/me/notifications', markRead: 'POST /v1/me/notifications/read' },
   webhooks: { payments: 'POST /v1/webhooks/payments/:provider' },
   dev: { mockPspComplete: 'POST /v1/dev/mock-psp/:providerRef/complete' },
   admin: {

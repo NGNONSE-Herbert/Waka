@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter, Manrope } from 'next/font/google';
+import { Bricolage_Grotesque, Figtree } from 'next/font/google';
 import './globals.css';
 import { getI18n } from '@/lib/i18n/server';
 import { I18nProvider } from '@/lib/i18n/client';
@@ -8,8 +8,8 @@ import { DemoBanner, Footer, Header } from '@/components/layout/Chrome';
 import { BottomNav } from '@/components/layout/HeaderClient';
 import { ServiceWorkerRegister } from '@/components/layout/ServiceWorkerRegister';
 
-const manrope = Manrope({ subsets: ['latin'], weight: ['500', '600', '700', '800'], variable: '--font-manrope', display: 'swap' });
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' });
+const bricolage = Bricolage_Grotesque({ subsets: ['latin'], weight: ['600', '700', '800'], variable: '--font-bricolage', display: 'swap' });
+const figtree = Figtree({ subsets: ['latin'], weight: ['400', '500', '600', '700'], variable: '--font-figtree', display: 'swap' });
 
 export async function generateMetadata(): Promise<Metadata> {
   const { t } = await getI18n();
@@ -24,7 +24,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export const viewport: Viewport = {
-  themeColor: '#142436',
+  themeColor: '#123A2A',
   width: 'device-width',
   initialScale: 1,
   viewportFit: 'cover',
@@ -33,7 +33,7 @@ export const viewport: Viewport = {
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const { locale, t } = await getI18n();
   return (
-    <html lang={locale} className={`${manrope.variable} ${inter.variable}`}>
+    <html lang={locale} className={`${bricolage.variable} ${figtree.variable}`}>
       <body className="min-h-dvh">
         <a
           href="#contenu"

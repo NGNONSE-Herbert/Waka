@@ -1,31 +1,12 @@
 import Link from 'next/link';
-import {
-  ArrowRight,
-  BadgeCheck,
-  CarFront,
-  CheckCircle2,
-  Clock,
-  Headset,
-  Landmark,
-  MapPinned,
-  Quote,
-  Search,
-  ShieldCheck,
-  Smartphone,
-  Ticket,
-  TriangleAlert,
-  Wallet,
-} from 'lucide-react';
+import { ArrowRight, Check, Headset, ShieldCheck, UserCheck } from 'lucide-react';
 import type { City } from '@waka/contracts';
 import { getI18n } from '@/lib/i18n/server';
-import { fmt } from '@/lib/i18n';
 import { serverGet } from '@/lib/api-server';
 import { FALLBACK_CITIES, POPULAR_CORRIDORS, cityName } from '@/lib/cities';
-import { duration, money } from '@/lib/format';
+import { money } from '@/lib/format';
 import { SearchForm } from '@/components/search/SearchForm';
-import { CorridorHero, MiniCorridor, RoadRibbon } from '@/components/brand/Illustrations';
-import { ButtonLink } from '@/components/ui/Button';
-import { Badge } from '@/components/ui/Card';
+import { CanopyCorner, CanopyHero } from '@/components/brand/Illustrations';
 
 async function loadCities(): Promise<City[]> {
   const r = await serverGet<City[] | { items: City[] }>('/v1/cities', { revalidate: 300, withCookies: false });
@@ -34,294 +15,233 @@ async function loadCities(): Promise<City[]> {
   return list?.length ? list : FALLBACK_CITIES;
 }
 
+const sectionTitle = 'text-[clamp(2rem,3.8vw,3.125rem)] font-extrabold leading-[1.02] tracking-[-0.03em]';
+const stepTitle = 'text-[1.375rem] font-extrabold';
+const pillLink = 'inline-flex items-center rounded-full font-display font-bold transition duration-200 hover:-translate-y-0.5';
+
 export default async function HomePage() {
   const [{ t, locale }, cities] = await Promise.all([getI18n(), loadCities()]);
   const L = t.landing;
+  const notes = [L.corridor1Note, L.corridor2Note, L.corridor3Note, L.corridor4Note];
 
   return (
     <>
       {/* ─── HERO ─────────────────────────────────────────── */}
-      <section className="relative isolate overflow-hidden bg-night-900 text-ivory">
-        <div className="pattern-ndop absolute inset-0 -z-10 opacity-70" aria-hidden="true" />
-        <div className="absolute -right-40 -top-40 -z-10 h-[34rem] w-[34rem] rounded-full bg-green-500/25 blur-3xl" aria-hidden="true" />
-        <div className="absolute -bottom-56 -left-24 -z-10 h-[30rem] w-[30rem] rounded-full bg-amber-400/15 blur-3xl" aria-hidden="true" />
-
-        <div className="container-w grid items-center gap-10 pb-36 pt-12 md:pt-16 lg:grid-cols-[1.1fr_0.9fr] lg:pb-44 lg:pt-20">
-          <div className="animate-fade-up">
-            <p className="eyebrow inline-flex items-center gap-2 rounded-full bg-white/5 px-3 py-1.5 text-amber-300 ring-1 ring-white/10">
-              <span className="h-1.5 w-1.5 animate-pulse-soft rounded-full bg-amber-400" aria-hidden="true" />
-              {L.eyebrow}
-            </p>
-            <h1 className="mt-5 text-[2.9rem] font-extrabold leading-[0.98] tracking-[-0.045em] sm:text-6xl lg:text-[5.2rem]">
-              {L.heroTitle.split(' ').slice(0, -1).join(' ')}{' '}
-              <span className="relative whitespace-nowrap text-amber-400">
-                {L.heroTitle.split(' ').slice(-1)}
-                <svg viewBox="0 0 200 20" className="absolute -bottom-2 left-0 h-3 w-full" aria-hidden="true" preserveAspectRatio="none">
-                  <path d="M2 14 C 50 2, 120 22, 198 6" fill="none" stroke="#0E8F83" strokeWidth="5" strokeLinecap="round" className="route-draw" style={{ ['--len' as string]: 220 }} />
-                </svg>
-              </span>
-            </h1>
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-night-200">{L.heroSubtitle}</p>
-          </div>
-
-          <div className="relative hidden lg:block" aria-hidden="true">
-            <CorridorHero className="w-full" fromLabel="Douala" toLabel="Yaoundé" midLabel="Édéa" />
-            {/* Carte flottante d’exemple */}
-            <div className="absolute bottom-2 right-0 w-72 rotate-[-2deg] rounded-3xl bg-white/[0.07] p-5 shadow-2xl ring-1 ring-white/15 backdrop-blur-md">
-              <div className="flex items-center justify-between">
-                <span className="eyebrow text-night-300">{L.heroCardLabel}</span>
-                <Badge tone="demo">{t.common.demo}</Badge>
+      <section className="bg-ivory pb-16 pt-6 lg:pb-[72px] lg:pt-10">
+        <div className="container-w flex flex-col gap-10">
+          <div className="flex flex-wrap items-center gap-12">
+            <div className="flex min-w-0 flex-[1_1_520px] flex-col gap-7">
+              <div className="flex flex-col items-start gap-5">
+                <p className="animate-fade-up rounded-full bg-green-50 px-4 py-2 text-sm font-bold text-night-800 [animation-delay:.1s]">{L.eyebrow}</p>
+                <h1 className="animate-fade-up text-[clamp(2.75rem,5.6vw,4.875rem)] font-extrabold leading-[0.98] tracking-[-0.035em] [animation-delay:.2s]">{L.heroTitle}</h1>
+                <p className="max-w-[560px] animate-fade-up text-[clamp(1.0625rem,1.5vw,1.25rem)] text-ink [animation-delay:.32s]">{L.heroSubtitle}</p>
               </div>
-              <div className="mt-3 flex items-baseline gap-2 font-display text-2xl font-extrabold">
-                08:00 <ArrowRight className="h-4 w-4 text-amber-400" /> 12:00
+              <div id="recherche" className="flex scroll-mt-24 animate-fade-up flex-col gap-4 rounded-[32px] bg-white p-5 shadow-lift [animation-delay:.46s] sm:p-6">
+                <h2 className="text-2xl font-extrabold">{L.searchTitle}</h2>
+                <SearchForm cities={cities} initial={{ from: 'DLA', to: 'YDE', seats: 1 }} />
               </div>
-              <p className="mt-1 text-sm text-night-200">{L.heroCardMeeting}</p>
-              <div className="mt-4 rounded-2xl bg-night-950/60 p-3">
-                <p className="text-xs text-night-300">{L.heroCardTotal}</p>
-                <p className="font-display text-2xl font-extrabold text-amber-400">{money(5500, locale)}</p>
-              </div>
-              <p className="mt-3 flex items-center gap-1.5 text-xs text-green-300">
-                <ShieldCheck className="h-3.5 w-3.5" /> {L.heroCardStatus}
-              </p>
             </div>
-          </div>
-        </div>
-      </section>
 
-      {/* ─── RECHERCHE + RUBAN DE CONFIANCE ────────────────── */}
-      <section className="container-w relative z-10 -mt-28 lg:-mt-32" aria-labelledby="search-title">
-        <div className="rounded-[2rem] bg-white p-4 shadow-lift ring-1 ring-line sm:p-6">
-          <h2 id="search-title" className="mb-4 flex items-center gap-2 text-lg font-extrabold text-night-900">
-            <Search className="h-5 w-5 text-green-600" aria-hidden="true" />
-            {L.heroTitle}
-          </h2>
-          <SearchForm cities={cities} />
-        </div>
-
-        <ul className="mt-6 grid gap-3 sm:grid-cols-3">
-          {[
-            { icon: Landmark, label: L.trustPayment },
-            { icon: BadgeCheck, label: L.trustDrivers },
-            { icon: Headset, label: L.trustHuman },
-          ].map(({ icon: Icon, label }) => (
-            <li key={label} className="flex items-center gap-3 rounded-2xl bg-white/70 px-4 py-3 ring-1 ring-line/70">
-              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-green-50 text-green-700">
-                <Icon className="h-5 w-5" aria-hidden="true" />
-              </span>
-              <span className="text-sm font-semibold text-night-900">{label}</span>
-            </li>
-          ))}
-        </ul>
-        <p className="mt-3 text-xs leading-relaxed text-ink">{L.trustFootnote}</p>
-      </section>
-
-      {/* ─── DEUX ENTRÉES ─────────────────────────────────── */}
-      <section className="container-w mt-20" aria-labelledby="entry-title">
-        <p className="eyebrow text-green-700">{L.entryEyebrow}</p>
-        <h2 id="entry-title" className="sr-only">
-          {L.entryEyebrow}
-        </h2>
-        <div className="mt-4 grid gap-5 md:grid-cols-2">
-          <Link
-            href="/conducteur"
-            className="group relative isolate overflow-hidden rounded-[2rem] bg-night-900 p-7 text-ivory shadow-lift transition hover:-translate-y-0.5 sm:p-9"
-          >
-            <div className="pattern-dots absolute inset-0 -z-10 opacity-60" aria-hidden="true" />
-            <RoadRibbon className="absolute -right-10 bottom-6 -z-10 h-24 w-[130%] text-green-400" />
-            <span className="grid h-14 w-14 place-items-center rounded-2xl bg-amber-400 text-night-900">
-              <CarFront className="h-7 w-7" aria-hidden="true" />
-            </span>
-            <h3 className="mt-6 text-3xl font-extrabold">{L.offerTitle}</h3>
-            <p className="mt-3 max-w-md leading-relaxed text-night-200">{L.offerBody}</p>
-            <span className="mt-7 inline-flex min-h-12 items-center gap-2 rounded-2xl bg-amber-400 px-5 font-display font-bold text-night-900 transition group-hover:gap-3">
-              {L.offerCta} <ArrowRight className="h-5 w-5" aria-hidden="true" />
-            </span>
-          </Link>
-          <Link
-            href="/demande"
-            className="group relative isolate overflow-hidden rounded-[2rem] bg-green-50 p-7 text-night-900 ring-1 ring-green-100 transition hover:-translate-y-0.5 hover:shadow-lift sm:p-9"
-          >
-            <div className="pattern-ndop-light absolute inset-0 -z-10" aria-hidden="true" />
-            <span className="grid h-14 w-14 place-items-center rounded-2xl bg-green-600 text-white">
-              <MapPinned className="h-7 w-7" aria-hidden="true" />
-            </span>
-            <h3 className="mt-6 text-3xl font-extrabold">{L.seekTitle}</h3>
-            <p className="mt-3 max-w-md leading-relaxed text-ink">{L.seekBody}</p>
-            <span className="mt-7 inline-flex min-h-12 items-center gap-2 rounded-2xl bg-green-600 px-5 font-display font-bold text-white transition group-hover:gap-3">
-              {L.seekCta} <ArrowRight className="h-5 w-5" aria-hidden="true" />
-            </span>
-          </Link>
-        </div>
-      </section>
-
-      {/* ─── CORRIDORS POPULAIRES ─────────────────────────── */}
-      <section className="container-w mt-24" aria-labelledby="corridors-title">
-        <div className="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <p className="eyebrow text-green-700">{L.corridorsEyebrow}</p>
-            <h2 id="corridors-title" className="mt-2 text-3xl font-extrabold sm:text-4xl">
-              {L.corridorsTitle}
-            </h2>
-            <p className="mt-2 max-w-xl text-ink">{L.corridorsSubtitle}</p>
-          </div>
-        </div>
-        <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-          {POPULAR_CORRIDORS.map((c, i) => (
-            <li key={`${c.from}-${c.to}`} className={i === 0 ? 'sm:col-span-2 lg:col-span-1' : ''}>
-              <Link
-                href={`/recherche?from=${c.from}&to=${c.to}&seats=1`}
-                className="group flex h-full flex-col rounded-3xl bg-white p-5 shadow-card ring-1 ring-line/70 transition hover:-translate-y-1 hover:shadow-lift"
-              >
-                <MiniCorridor seed={i + 2} className="h-20 w-full" />
-                <div className="mt-3 flex flex-wrap items-center gap-x-2 font-display text-lg font-extrabold leading-tight">
-                  {cityName(cities, c.from)}
-                  <ArrowRight className="h-4 w-4 text-green-600" aria-hidden="true" />
-                  {cityName(cities, c.to)}
+            <div className="relative mx-auto w-full max-w-[560px] flex-[1_1_420px]">
+              <div className="canopy-pop aspect-[1/1.08] overflow-hidden rounded-[999px_999px_40px_40px] bg-[#E1F0D9]">
+                <CanopyHero />
+              </div>
+              <div className="canopy-float absolute bottom-7 left-0 flex max-w-[250px] flex-col gap-1.5 rounded-[28px_8px_28px_8px] bg-white px-[18px] py-4 shadow-lift">
+                <div className="flex items-center justify-between gap-4 text-[0.8125rem] font-semibold text-ink">
+                  {L.heroCardLabel}
+                  <span className="rounded-full bg-green-50 px-2 py-0.5 text-[0.6875rem] font-bold text-night-800">{t.common.demo}</span>
                 </div>
-                <p className="mt-1 flex items-center gap-1.5 text-sm text-ink">
-                  <Clock className="h-3.5 w-3.5" aria-hidden="true" />
-                  {fmt(L.corridorDuration, { d: duration(c.durationMin) })}
+                <p className="font-display text-xl font-extrabold tracking-[-0.02em]">
+                  {cityName(cities, 'DLA')} → {cityName(cities, 'YDE')}
                 </p>
-                <span className="mt-auto inline-flex items-center gap-1 pt-4 text-sm font-bold text-green-700 group-hover:gap-2">
-                  {L.corridorSee} <ArrowRight className="h-4 w-4 transition-all" aria-hidden="true" />
-                </span>
-              </Link>
-              <Link
-                href={`/recherche?from=${c.to}&to=${c.from}&seats=1`}
-                className="mt-1 inline-flex min-h-10 items-center gap-1 px-2 text-xs font-semibold text-ink hover:text-green-700"
-              >
-                {cityName(cities, c.to)} → {cityName(cities, c.from)}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      {/* ─── COMMENT ÇA MARCHE ────────────────────────────── */}
-      <section id="comment-ca-marche" className="container-w mt-24 scroll-mt-24" aria-labelledby="how-title">
-        <p className="eyebrow text-green-700">{L.howEyebrow}</p>
-        <h2 id="how-title" className="mt-2 text-3xl font-extrabold sm:text-4xl">
-          {L.howTitle}
-        </h2>
-        <ol className="mt-10 grid gap-5 md:grid-cols-3">
-          {[
-            { icon: Search, title: L.how1Title, body: L.how1Body },
-            { icon: Smartphone, title: L.how2Title, body: L.how2Body },
-            { icon: Ticket, title: L.how3Title, body: L.how3Body },
-          ].map(({ icon: Icon, title, body }, i) => (
-            <li key={title} className="relative rounded-3xl bg-white p-7 shadow-card ring-1 ring-line/70">
-              <span className="absolute right-6 top-4 font-display text-7xl font-extrabold leading-none text-green-50" aria-hidden="true">
-                {i + 1}
-              </span>
-              <span className="relative grid h-12 w-12 place-items-center rounded-2xl bg-night-900 text-amber-400">
-                <Icon className="h-6 w-6" aria-hidden="true" />
-              </span>
-              <h3 className="relative mt-5 text-xl font-extrabold">{title}</h3>
-              <p className="relative mt-2 leading-relaxed text-ink">{body}</p>
-            </li>
-          ))}
-        </ol>
-      </section>
-
-      {/* ─── PAIEMENT PROTÉGÉ : FRISE ANIMÉE ──────────────── */}
-      <section className="relative isolate mt-24 overflow-hidden bg-night-900 py-20 text-ivory" aria-labelledby="pay-title">
-        <div className="pattern-ndop absolute inset-0 -z-10 opacity-50" aria-hidden="true" />
-        <div className="absolute left-1/2 top-0 -z-10 h-72 w-[48rem] -translate-x-1/2 rounded-full bg-green-500/20 blur-3xl" aria-hidden="true" />
-        <div className="container-w">
-          <p className="eyebrow text-amber-300">{L.payEyebrow}</p>
-          <h2 id="pay-title" className="mt-2 max-w-3xl text-3xl font-extrabold sm:text-5xl">
-            {L.payTitle}
-          </h2>
-          <p className="mt-4 max-w-2xl text-lg text-night-200">{L.paySubtitle}</p>
-
-          <ol className="relative mt-12 grid gap-6 lg:grid-cols-4 lg:gap-4">
-            {/* ligne de progression */}
-            <div className="absolute bottom-6 left-[1.6rem] top-6 w-0.5 bg-night-700 lg:bottom-auto lg:left-8 lg:right-8 lg:top-[1.6rem] lg:h-0.5 lg:w-auto" aria-hidden="true">
-              <div className="h-full w-full origin-top animate-[grow-y_3s_ease-out_both] bg-gradient-to-b from-green-400 to-amber-400 lg:origin-left lg:animate-[grow-x_3s_ease-out_both] lg:bg-gradient-to-r" />
+                <p className="text-[0.9375rem]">
+                  <strong>{money(5500, locale)}</strong> <span className="text-ink">{L.heroCardTotal}</span>
+                </p>
+              </div>
             </div>
-            {[
-              { icon: Smartphone, title: L.pay1Title, body: L.pay1Body },
-              { icon: Landmark, title: L.pay2Title, body: L.pay2Body },
-              { icon: CheckCircle2, title: L.pay3Title, body: L.pay3Body },
-              { icon: Wallet, title: L.pay4Title, body: L.pay4Body },
-            ].map(({ icon: Icon, title, body }, i) => (
-              <li key={title} className="relative flex gap-4 lg:block" style={{ animationDelay: `${0.25 + i * 0.5}s` }}>
-                <span
-                  className="relative z-10 grid h-[3.2rem] w-[3.2rem] shrink-0 place-items-center rounded-2xl bg-night-800 text-amber-400 ring-4 ring-night-900 animate-fade-up"
-                  style={{ animationDelay: `${0.2 + i * 0.6}s` }}
+          </div>
+
+          <div>
+            <ul className="flex flex-wrap gap-3 text-[0.9375rem] font-semibold text-night-900">
+              {[
+                { icon: ShieldCheck, label: L.trustPayment },
+                { icon: UserCheck, label: L.trustDrivers },
+                { icon: Headset, label: L.trustHuman },
+              ].map(({ icon: Icon, label }) => (
+                <li key={label} className="flex flex-[1_1_280px] items-center gap-3 rounded-[28px_8px_28px_8px] bg-green-50 px-5 py-3.5">
+                  <Icon className="h-[22px] w-[22px] shrink-0 text-green-500" aria-hidden="true" />
+                  {label}
+                </li>
+              ))}
+            </ul>
+            <p className="mt-3 text-xs leading-relaxed text-ink">{L.trustFootnote}</p>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── CORRIDORS ────────────────────────────────────── */}
+      <section className="bg-white py-16 lg:py-24" aria-labelledby="corridors-title">
+        <div className="container-w flex flex-wrap items-start gap-x-[72px] gap-y-10">
+          <div className="canopy-reveal flex min-w-0 flex-[1_1_320px] flex-col gap-3.5">
+            <p className="text-[0.9375rem] font-bold text-green-500">{L.corridorsEyebrow}</p>
+            <h2 id="corridors-title" className={sectionTitle}>{L.corridorsTitle}</h2>
+            <p className="text-lg text-ink">{L.corridorsSubtitle}</p>
+          </div>
+          <ul className="canopy-reveal flex min-w-0 flex-[2_1_520px] flex-col gap-2.5">
+            {POPULAR_CORRIDORS.slice(0, 4).map((c, i) => (
+              <li key={`${c.from}-${c.to}`}>
+                <Link
+                  href={`/recherche?from=${c.from}&to=${c.to}&seats=1`}
+                  className="group flex min-h-[84px] items-center justify-between gap-4 rounded-[28px_8px_28px_8px] bg-ivory py-4 pl-6 pr-4 transition hover:bg-green-50 sm:pl-7"
                 >
-                  <Icon className="h-6 w-6" aria-hidden="true" />
-                </span>
-                <div className="animate-fade-up lg:mt-5 lg:pr-4" style={{ animationDelay: `${0.35 + i * 0.6}s` }}>
-                  <p className="font-display text-xs font-bold text-night-300">0{i + 1}</p>
-                  <h3 className="text-xl font-extrabold">{title}</h3>
-                  <p className="mt-1 text-night-200">{body}</p>
-                </div>
+                  <span className="flex flex-wrap items-baseline gap-x-5 gap-y-1">
+                    <span className="font-display text-2xl font-extrabold tracking-[-0.02em]">
+                      {cityName(cities, c.from)} ↔ {cityName(cities, c.to)}
+                    </span>
+                    <span className="text-ink">{notes[i]}</span>
+                  </span>
+                  <span className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-night-900 text-white transition group-hover:translate-x-0.5">
+                    <ArrowRight className="h-5 w-5" aria-hidden="true" />
+                  </span>
+                </Link>
               </li>
             ))}
+          </ul>
+        </div>
+      </section>
+
+      {/* ─── DEUX FAÇONS ──────────────────────────────────── */}
+      <section id="deux-facons" className="scroll-mt-24 bg-white pb-16 lg:pb-24">
+        <div className="container-w flex flex-wrap gap-5">
+          <article className="canopy-reveal flex min-w-0 flex-[1_1_420px] flex-col items-start gap-4 rounded-[72px_16px_72px_16px] bg-night-900 p-[clamp(1.75rem,4vw,3rem)] text-white">
+            <p className="rounded-full bg-night-800 px-3.5 py-1.5 text-sm font-bold text-amber-400">{L.offerBadge}</p>
+            <h3 className="text-[clamp(1.75rem,3.2vw,2.5rem)] font-extrabold leading-[1.05] tracking-[-0.03em]">{L.offerTitle}</h3>
+            <p className="text-[1.0625rem] text-night-200">{L.offerBody}</p>
+            <ul className="flex flex-col gap-2.5 text-[0.9375rem]">
+              {[L.offerPoint1, L.offerPoint2].map((point) => (
+                <li key={point} className="flex gap-2.5">
+                  <Check className="mt-0.5 h-5 w-5 shrink-0 text-amber-400" strokeWidth={2.4} aria-hidden="true" />
+                  {point}
+                </li>
+              ))}
+            </ul>
+            <Link href="/conducteur" className={`${pillLink} mt-auto h-[54px] bg-amber-400 px-[26px] text-[1.0625rem] text-night-950`}>
+              {L.offerCta}
+            </Link>
+          </article>
+          <article className="canopy-reveal flex min-w-0 flex-[1_1_420px] flex-col items-start gap-4 rounded-[16px_72px_16px_72px] bg-amber-400 p-[clamp(1.75rem,4vw,3rem)] text-night-950">
+            <p className="rounded-full bg-night-950 px-3.5 py-1.5 text-sm font-bold text-white">{L.seekBadge}</p>
+            <h3 className="text-[clamp(1.75rem,3.2vw,2.5rem)] font-extrabold leading-[1.05] tracking-[-0.03em]">{L.seekTitle}</h3>
+            <p className="text-[1.0625rem] text-night-900">{L.seekBody}</p>
+            <p className="w-full rounded-[24px_6px_24px_6px] bg-white px-5 py-4 text-[0.9375rem] font-medium">{L.seekExample}</p>
+            <Link href="/demande" className={`${pillLink} mt-auto h-[54px] bg-night-950 px-[26px] text-[1.0625rem] text-white`}>
+              {L.seekCta}
+            </Link>
+          </article>
+        </div>
+      </section>
+
+      {/* ─── PAIEMENT ─────────────────────────────────────── */}
+      <section id="paiement" className="scroll-mt-24 bg-green-50 py-16 lg:py-24" aria-labelledby="pay-title">
+        <div className="container-w flex flex-col gap-10">
+          <div className="canopy-reveal flex max-w-[780px] flex-col gap-3.5">
+            <p className="text-[0.9375rem] font-bold text-night-800">{L.payEyebrow}</p>
+            <h2 id="pay-title" className="text-[clamp(2.125rem,4.2vw,3.5rem)] font-extrabold leading-none tracking-[-0.035em]">{L.payTitle}</h2>
+            <p className="text-lg text-ink">{L.paySubtitle}</p>
+          </div>
+          <ol className="canopy-reveal grid grid-cols-[repeat(auto-fit,minmax(min(250px,100%),1fr))] gap-4">
+            {[
+              { title: L.pay1Title, body: L.pay1Body },
+              { title: L.pay2Title, body: L.pay2Body },
+              { title: L.pay3Title, body: L.pay3Body },
+              { title: L.pay4Title, body: L.pay4Body },
+            ].map(({ title, body }, i) => {
+              const last = i === 3;
+              return (
+                <li
+                  key={title}
+                  className={`flex flex-col gap-2.5 p-7 ${i % 2 === 0 ? 'rounded-[48px_12px_48px_12px]' : 'rounded-[12px_48px_12px_48px]'} ${last ? 'bg-night-900 text-white' : 'bg-white'}`}
+                >
+                  <span className={`grid h-11 w-11 place-items-center rounded-full font-display text-lg font-extrabold ${last ? 'bg-amber-400 text-night-950' : 'bg-night-900 text-amber-400'}`}>{i + 1}</span>
+                  <h3 className={stepTitle}>{title}</h3>
+                  <p className={`text-[0.9375rem] ${last ? 'text-night-200' : 'text-ink'}`}>{body}</p>
+                </li>
+              );
+            })}
           </ol>
-
-          <div className="mt-10 flex flex-col gap-4 rounded-3xl bg-amber-400/10 p-6 ring-1 ring-amber-400/30 sm:flex-row sm:items-start">
-            <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-amber-400 text-night-900">
-              <TriangleAlert className="h-6 w-6" aria-hidden="true" />
-            </span>
-            <div>
-              <h3 className="text-lg font-extrabold text-amber-300">{L.payIssueTitle}</h3>
-              <p className="mt-1 max-w-3xl text-night-200">{L.payIssueBody}</p>
+          <div className="canopy-reveal flex flex-wrap items-center justify-between gap-x-8 gap-y-4 rounded-[32px] bg-white p-6 sm:px-8 sm:py-7">
+            <div className="flex min-w-0 flex-[1_1_420px] flex-col gap-1.5">
+              <h3 className={stepTitle}>{L.payIssueTitle}</h3>
+              <p className="text-ink">{L.payIssueBody}</p>
             </div>
+            <Link href="/paiement-protege" className="inline-flex min-h-[52px] items-center rounded-full border-2 border-night-900 px-6 py-2 font-bold transition hover:bg-green-50">
+              {L.payLearnMore}
+            </Link>
           </div>
+          <p className="text-sm text-ink">{L.payNote}</p>
+        </div>
+      </section>
 
-          <div className="mt-8 flex flex-wrap items-center gap-4">
-            <ButtonLink href="/paiement-protege" variant="amber">
-              {L.payLearnMore} <ArrowRight className="h-5 w-5" aria-hidden="true" />
-            </ButtonLink>
-            <p className="text-xs text-night-300">{L.payNote}</p>
+      {/* ─── ÉTAPES + PRIX ────────────────────────────────── */}
+      <section id="comment-ca-marche" className="scroll-mt-24 bg-ivory py-16 lg:py-24" aria-labelledby="how-title">
+        <div className="container-w flex flex-wrap items-center gap-x-[72px] gap-y-12">
+          <div className="canopy-reveal flex min-w-0 flex-[1_1_380px] flex-col gap-[18px] rounded-[72px_16px_72px_16px] bg-white p-7 shadow-lift sm:p-9">
+            <div className="flex items-center justify-between gap-3">
+              <h3 className="text-[1.375rem] font-extrabold">{L.priceRoute}</h3>
+              <span className="shrink-0 rounded-full bg-green-50 px-3 py-1 text-[0.8125rem] font-bold text-night-800">{L.priceExample}</span>
+            </div>
+            <dl className="flex flex-col gap-3.5 text-[1.0625rem]">
+              <div className="flex justify-between gap-4">
+                <dt className="text-ink">{L.priceDriver}</dt>
+                <dd className="tabular whitespace-nowrap font-bold">{money(5000, locale)}</dd>
+              </div>
+              <div className="flex justify-between gap-4">
+                <dt className="text-ink">{L.priceFee}</dt>
+                <dd className="tabular whitespace-nowrap font-bold">{money(500, locale)}</dd>
+              </div>
+              <div className="flex flex-wrap items-baseline justify-between gap-x-4 border-t-2 border-dotted border-green-200 pt-[18px]">
+                <dt className="font-bold">{L.priceTotal}</dt>
+                <dd className="tabular whitespace-nowrap font-display text-4xl font-extrabold tracking-[-0.03em]">{money(5500, locale)}</dd>
+              </div>
+            </dl>
+            <p className="text-[0.9375rem] text-ink">{L.priceNote}</p>
+          </div>
+          <div className="canopy-reveal flex min-w-0 flex-[1_1_460px] flex-col gap-8">
+            <div className="flex flex-col gap-3">
+              <p className="text-[0.9375rem] font-bold text-green-500">{L.howEyebrow}</p>
+              <h2 id="how-title" className={sectionTitle}>{L.howTitle}</h2>
+            </div>
+            <ol className="flex flex-col gap-[22px]">
+              {[
+                { title: L.how1Title, body: L.how1Body },
+                { title: L.how2Title, body: L.how2Body },
+                { title: L.how3Title, body: L.how3Body },
+              ].map(({ title, body }, i) => (
+                <li key={title} className="flex gap-[18px]">
+                  <span className="grid h-[52px] w-[52px] shrink-0 place-items-center rounded-full bg-amber-400 font-display text-[1.375rem] font-extrabold text-night-950">{i + 1}</span>
+                  <div className="flex flex-col gap-1">
+                    <h3 className={stepTitle}>{title}</h3>
+                    <p className="text-ink">{body}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
           </div>
         </div>
       </section>
 
-      {/* ─── TÉMOIGNAGES FICTIFS (signalés) ───────────────── */}
-      <section className="container-w mt-24" aria-labelledby="testi-title">
-        <div className="flex flex-wrap items-center gap-3">
-          <p className="eyebrow text-green-700">{L.testimonialsEyebrow}</p>
-          <Badge tone="demo">{L.testimonialsLabel}</Badge>
-        </div>
-        <h2 id="testi-title" className="sr-only">
-          {L.testimonialsEyebrow} — {L.testimonialsLabel}
-        </h2>
-        <ul className="mt-6 grid gap-5 md:grid-cols-3">
-          {[
-            { q: L.t1Quote, n: L.t1Name },
-            { q: L.t2Quote, n: L.t2Name },
-            { q: L.t3Quote, n: L.t3Name },
-          ].map(({ q, n }) => (
-            <li key={n}>
-              <figure className="flex h-full flex-col rounded-3xl bg-white p-7 ring-1 ring-line/70">
-                <Quote className="h-7 w-7 text-amber-400" aria-hidden="true" />
-                <blockquote className="mt-4 flex-1 text-lg font-medium leading-relaxed text-night-900">{q}</blockquote>
-                <figcaption className="mt-5 text-sm font-semibold text-ink">
-                  {n} · <span className="text-amber-800">{t.common.demo}</span>
-                </figcaption>
-              </figure>
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      {/* ─── CTA ──────────────────────────────────────────── */}
-      <section className="container-w my-24">
-        <div className="relative isolate overflow-hidden rounded-[2.5rem] bg-green-600 px-7 py-12 text-white sm:px-12">
-          <div className="pattern-ndop absolute inset-0 -z-10 opacity-60" aria-hidden="true" />
-          <RoadRibbon className="absolute -bottom-4 left-0 -z-10 h-28 w-full text-night-900" />
-          <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
-            <div>
-              <h2 className="text-3xl font-extrabold sm:text-4xl">{L.ctaTitle}</h2>
-              <p className="mt-2 text-green-50">{L.ctaBody}</p>
+      {/* ─── APPEL CONDUCTEUR ─────────────────────────────── */}
+      <section className="bg-ivory pb-8 md:pb-24">
+        <div className="container-w">
+          <div className="canopy-reveal relative flex flex-wrap items-center justify-between gap-x-12 gap-y-6 overflow-hidden rounded-[64px_20px_64px_20px] bg-night-900 p-[clamp(2rem,5vw,4rem)] text-white md:rounded-[96px_24px_96px_24px]">
+            <CanopyCorner className="absolute bottom-0 right-0 h-auto w-[min(400px,60%)]" />
+            <div className="relative flex min-w-0 flex-[1_1_460px] flex-col gap-2.5">
+              <h2 className="text-[clamp(1.875rem,3.6vw,2.875rem)] font-extrabold leading-[1.02] tracking-[-0.03em]">{L.ctaTitle}</h2>
+              <p className="text-lg text-night-200">{L.ctaBody}</p>
             </div>
-            <ButtonLink href="/recherche" variant="amber" size="lg">
-              <Search className="h-5 w-5" aria-hidden="true" />
-              {t.nav.findTrip}
-            </ButtonLink>
+            <Link href="/conducteur" className={`${pillLink} relative h-[60px] bg-amber-400 px-[30px] text-lg text-night-950`}>
+              {L.offerCta}
+            </Link>
           </div>
         </div>
       </section>

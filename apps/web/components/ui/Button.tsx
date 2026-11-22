@@ -6,11 +6,11 @@ type Variant = 'primary' | 'amber' | 'secondary' | 'ghost' | 'dark' | 'danger' |
 type Size = 'sm' | 'md' | 'lg';
 
 const base =
-  'inline-flex select-none items-center justify-center gap-2 rounded-2xl font-display font-bold tracking-[-0.01em] transition duration-200 ease-out active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50';
+  'inline-flex select-none items-center justify-center gap-2 rounded-full font-display font-bold tracking-[-0.01em] transition duration-200 ease-out active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50';
 const variants: Record<Variant, string> = {
-  primary: 'bg-green-600 text-white shadow-[0_8px_20px_-10px_rgb(11_122_112/0.8)] hover:bg-green-700',
-  amber: 'bg-amber-400 text-night-900 shadow-[0_8px_24px_-10px_rgb(245_185_66/0.9)] hover:bg-amber-300',
-  secondary: 'bg-white text-night-900 ring-1 ring-inset ring-line hover:ring-night-200 hover:bg-ivory',
+  primary: 'bg-night-900 text-white hover:bg-night-800',
+  amber: 'bg-amber-400 text-night-950 hover:bg-amber-500',
+  secondary: 'bg-white text-night-950 ring-1 ring-inset ring-green-200 hover:bg-ivory',
   ghost: 'text-green-700 hover:bg-green-50',
   dark: 'bg-night-900 text-ivory hover:bg-night-800',
   danger: 'bg-danger text-white hover:brightness-110',

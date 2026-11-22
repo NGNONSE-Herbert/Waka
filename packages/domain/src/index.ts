@@ -9,3 +9,4 @@ export * from './rbac.js';
 export * from './payment-provider.js';
 export * from './phone.js';
 export * from './brand.js';
+export * from './messaging.js';

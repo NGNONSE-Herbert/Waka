@@ -3,6 +3,7 @@ import { useState, type FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowLeftRight, ArrowRight, CalendarDays, MapPin, Navigation, Search, Users } from 'lucide-react';
 import type { City } from '@waka/contracts';
+import { fmt } from '@/lib/i18n';
 import { useI18n } from '@/lib/i18n/client';
 import { todayInDouala } from '@/lib/format';
 import { Button } from '@/components/ui/Button';
@@ -30,6 +31,20 @@ function Labeled({ id, label, icon, children, className }: { id: string; label: 
   );
 }
 
+const heroCtl =
+  'block h-16 w-full min-w-0 appearance-none rounded-[20px] border-0 bg-ivory px-5 pb-1.5 pt-6 text-lg font-bold text-night-950 ring-1 ring-inset ring-line transition focus:bg-white focus:ring-2 focus:ring-green-500';
+
+function HeroField({ id, label, children }: { id: string; label: string; children: React.ReactNode }) {
+  return (
+    <div className="relative min-w-0">
+      <label htmlFor={id} className="pointer-events-none absolute left-5 top-2.5 z-10 text-[0.8125rem] font-semibold text-ink">
+        {label}
+      </label>
+      {children}
+    </div>
+  );
+}
+
 /** Recherche instantanée : départ ⇄ destination, date, places → /recherche. */
 export function SearchForm({ cities, initial, variant = 'hero' }: { cities: City[]; initial?: SearchValues; variant?: 'hero' | 'compact' }) {
   const { t } = useI18n();
@@ -40,7 +55,6 @@ export function SearchForm({ cities, initial, variant = 'hero' }: { cities: City
   const [seats, setSeats] = useState(initial?.seats ?? 1);
   const [error, setError] = useState<string | null>(null);
   const [spin, setSpin] = useState(false);
-  const idp = variant === 'hero' ? 'h' : 'c';
 
   const submit = (e: FormEvent) => {
     e.preventDefault();
@@ -63,18 +77,80 @@ export function SearchForm({ cities, initial, variant = 'hero' }: { cities: City
     setSpin((s) => !s);
   };
 
+  if (variant === 'hero') {
+    return (
+      <form onSubmit={submit} role="search" aria-label={t.search.title} noValidate className="flex flex-col gap-4">
+        <div className="grid gap-3">
+          <div className="relative grid gap-3 sm:grid-cols-2">
+            <HeroField id="h-from" label={t.common.from}>
+              <select id="h-from" className={heroCtl} value={from} onChange={(e) => setFrom(e.target.value)} aria-invalid={error ? true : undefined} aria-describedby={error ? 'h-err' : undefined}>
+                <option value="">{t.search.anyCity}</option>
+                {cities.map((c) => (
+                  <option key={c.code} value={c.code}>
+                    {c.name}
+                  </option>
+                ))}
+              </select>
+            </HeroField>
+            <HeroField id="h-to" label={t.common.to}>
+              <select id="h-to" className={heroCtl} value={to} onChange={(e) => setTo(e.target.value)} aria-invalid={error ? true : undefined} aria-describedby={error ? 'h-err' : undefined}>
+                <option value="">{t.search.anyCity}</option>
+                {cities.map((c) => (
+                  <option key={c.code} value={c.code}>
+                    {c.name}
+                  </option>
+                ))}
+              </select>
+            </HeroField>
+            <button
+              type="button"
+              onClick={swap}
+              aria-label={t.common.swap}
+              className="absolute right-3 top-1/2 z-10 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full bg-amber-400 text-night-950 transition hover:bg-amber-500 sm:left-1/2 sm:right-auto sm:-translate-x-1/2"
+            >
+              <ArrowLeftRight className={cn('h-[18px] w-[18px] rotate-90 transition-transform duration-500 sm:rotate-0', spin && 'rotate-[270deg] sm:rotate-180')} aria-hidden="true" />
+            </button>
+          </div>
+          <div className="grid grid-cols-[1.4fr_1fr] gap-3">
+            <HeroField id="h-date" label={t.common.date}>
+              <input id="h-date" type="date" className={heroCtl} value={date} min={todayInDouala()} onChange={(e) => setDate(e.target.value)} />
+            </HeroField>
+            <HeroField id="h-seats" label={t.search.seatsLabel}>
+              <select id="h-seats" className={heroCtl} value={seats} onChange={(e) => setSeats(Number(e.target.value))}>
+                {[1, 2, 3, 4].map((n) => (
+                  <option key={n} value={n}>
+                    {fmt(n > 1 ? t.landing.seatMany : t.landing.seatOne, { n })}
+                  </option>
+                ))}
+              </select>
+            </HeroField>
+          </div>
+        </div>
+        {error && (
+          <p id="h-err" role="alert" className="text-sm font-semibold text-danger">
+            {error}
+          </p>
+        )}
+        <button
+          type="submit"
+          className="flex h-16 items-center justify-between gap-3 rounded-full bg-night-900 pl-7 pr-2.5 font-display text-[1.1875rem] font-bold text-white transition duration-200 hover:-translate-y-0.5 hover:bg-night-800"
+        >
+          {t.landing.searchCta}
+          <span className="grid h-11 w-11 place-items-center rounded-full bg-amber-400 text-night-950">
+            <ArrowRight className="h-5 w-5" strokeWidth={2.4} aria-hidden="true" />
+          </span>
+        </button>
+      </form>
+    );
+  }
+
   return (
     <form onSubmit={submit} role="search" aria-label={t.search.title} noValidate>
       <div
-        className={cn(
-          'grid gap-2.5',
-          variant === 'hero'
-            ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1fr_auto_1fr_0.8fr_0.55fr_auto] lg:items-center'
-            : 'grid-cols-2 md:grid-cols-[1fr_auto_1fr_0.8fr_0.55fr_auto] md:items-center',
-        )}
+        className="grid grid-cols-2 gap-2.5 md:grid-cols-[1fr_auto_1fr_0.8fr_0.55fr_auto] md:items-center"
       >
-        <Labeled id={`${idp}-from`} label={t.common.from} icon={<Navigation className="h-4.5 w-4.5" aria-hidden="true" />} className={variant === 'compact' ? 'col-span-2 md:col-span-1' : ''}>
-          <select id={`${idp}-from`} className={ctl} value={from} onChange={(e) => setFrom(e.target.value)} aria-invalid={error ? true : undefined} aria-describedby={error ? `${idp}-err` : undefined}>
+        <Labeled id="c-from" label={t.common.from} icon={<Navigation className="h-4.5 w-4.5" aria-hidden="true" />} className="col-span-2 md:col-span-1">
+          <select id="c-from" className={ctl} value={from} onChange={(e) => setFrom(e.target.value)} aria-invalid={error ? true : undefined} aria-describedby={error ? 'c-err' : undefined}>
             <option value="">{t.search.anyCity}</option>
             {cities.map((c) => (
               <option key={c.code} value={c.code}>
@@ -84,22 +160,19 @@ export function SearchForm({ cities, initial, variant = 'hero' }: { cities: City
           </select>
         </Labeled>
 
-        <div className={cn('relative flex justify-center', variant === 'hero' ? 'sm:hidden lg:flex' : 'col-span-2 -my-4 md:col-span-1 md:my-0')}>
+        <div className="relative col-span-2 -my-4 flex justify-center md:col-span-1 md:my-0">
           <button
             type="button"
             onClick={swap}
             aria-label={t.common.swap}
-            className={cn(
-              'z-10 grid h-11 w-11 place-items-center rounded-full bg-white text-green-700 shadow-card ring-1 ring-line transition duration-300 hover:bg-green-50',
-              variant === 'hero' && '-my-4 lg:my-0',
-            )}
+            className="z-10 grid h-11 w-11 place-items-center rounded-full bg-white text-green-700 shadow-card ring-1 ring-line transition duration-300 hover:bg-green-50"
           >
-            <ArrowLeftRight className={cn('h-4.5 w-4.5 rotate-90 transition-transform duration-500 lg:rotate-0', spin && 'rotate-[270deg] lg:rotate-180')} aria-hidden="true" />
+            <ArrowLeftRight className={cn('h-4.5 w-4.5 rotate-90 transition-transform duration-500 md:rotate-0', spin && 'rotate-[270deg] md:rotate-180')} aria-hidden="true" />
           </button>
         </div>
 
-        <Labeled id={`${idp}-to`} label={t.common.to} icon={<MapPin className="h-4.5 w-4.5" aria-hidden="true" />} className={variant === 'compact' ? 'col-span-2 md:col-span-1' : ''}>
-          <select id={`${idp}-to`} className={ctl} value={to} onChange={(e) => setTo(e.target.value)} aria-invalid={error ? true : undefined} aria-describedby={error ? `${idp}-err` : undefined}>
+        <Labeled id="c-to" label={t.common.to} icon={<MapPin className="h-4.5 w-4.5" aria-hidden="true" />} className="col-span-2 md:col-span-1">
+          <select id="c-to" className={ctl} value={to} onChange={(e) => setTo(e.target.value)} aria-invalid={error ? true : undefined} aria-describedby={error ? 'c-err' : undefined}>
             <option value="">{t.search.anyCity}</option>
             {cities.map((c) => (
               <option key={c.code} value={c.code}>
@@ -109,12 +182,12 @@ export function SearchForm({ cities, initial, variant = 'hero' }: { cities: City
           </select>
         </Labeled>
 
-        <Labeled id={`${idp}-date`} label={t.common.date} icon={<CalendarDays className="h-4.5 w-4.5" aria-hidden="true" />}>
-          <input id={`${idp}-date`} type="date" className={cn(ctl, 'pr-2')} value={date} min={todayInDouala()} onChange={(e) => setDate(e.target.value)} />
+        <Labeled id="c-date" label={t.common.date} icon={<CalendarDays className="h-4.5 w-4.5" aria-hidden="true" />}>
+          <input id="c-date" type="date" className={cn(ctl, 'pr-2')} value={date} min={todayInDouala()} onChange={(e) => setDate(e.target.value)} />
         </Labeled>
 
-        <Labeled id={`${idp}-seats`} label={t.search.seatsLabel} icon={<Users className="h-4.5 w-4.5" aria-hidden="true" />}>
-          <select id={`${idp}-seats`} className={ctl} value={seats} onChange={(e) => setSeats(Number(e.target.value))}>
+        <Labeled id="c-seats" label={t.search.seatsLabel} icon={<Users className="h-4.5 w-4.5" aria-hidden="true" />}>
+          <select id="c-seats" className={ctl} value={seats} onChange={(e) => setSeats(Number(e.target.value))}>
             {[1, 2, 3, 4].map((n) => (
               <option key={n} value={n}>
                 {n}
@@ -123,19 +196,13 @@ export function SearchForm({ cities, initial, variant = 'hero' }: { cities: City
           </select>
         </Labeled>
 
-        <Button
-          type="submit"
-          variant={variant === 'hero' ? 'amber' : 'primary'}
-          size="lg"
-          className={cn('min-h-14 w-full', variant === 'hero' ? 'sm:col-span-2 lg:col-span-1 lg:w-auto' : 'col-span-2 md:col-span-1 md:w-auto')}
-        >
-          {variant === 'hero' ? <Search className="h-5 w-5" aria-hidden="true" /> : null}
-          {variant === 'hero' ? t.landing.searchCta : t.search.submit}
-          {variant === 'hero' ? <ArrowRight className="h-5 w-5 lg:hidden" aria-hidden="true" /> : <Search className="h-5 w-5" aria-hidden="true" />}
+        <Button type="submit" variant="primary" size="lg" className="col-span-2 min-h-14 w-full md:col-span-1 md:w-auto">
+          {t.search.submit}
+          <Search className="h-5 w-5" aria-hidden="true" />
         </Button>
       </div>
       {error && (
-        <p id={`${idp}-err`} role="alert" className="mt-2 text-sm font-semibold text-danger">
+        <p id="c-err" role="alert" className="mt-2 text-sm font-semibold text-danger">
           {error}
         </p>
       )}

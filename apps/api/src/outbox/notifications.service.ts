@@ -18,6 +18,7 @@ const TEMPLATES: Record<string, (p: Record<string, unknown>) => string> = {
   'dispute.evidence_requested': (p) => `Waka : l'équipe Waka demande des éléments sur votre litige avant le ${p.dueAt}.`,
   'dispute.resolved': () => 'Waka : votre litige est résolu. Vous disposez de 7 jours pour demander un réexamen.',
   'trip.match': (p) => `Waka : un nouveau trajet correspond à votre demande ${p.route}.`,
+  'message.new': (p) => `Waka : nouveau message de ${p.from} sur le trajet ${p.route}.`,
 };
 
 /** Notifications (SMS simulé) : enfilées dans l'outbox avec l'effet métier, envoyées par le worker. */

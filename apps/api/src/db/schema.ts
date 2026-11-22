@@ -372,6 +372,15 @@ export const notifications = pgTable('notifications', {
   template: text('template').notNull(),
   payload: jsonb('payload').$type<Record<string, unknown>>().notNull().default({}),
   status: text('status').notNull().default('SENT'),
+  readAt: ts('read_at'),
+  createdAt: ts('created_at').notNull().defaultNow(),
+});
+
+export const bookingMessages = pgTable('booking_messages', {
+  id: id(),
+  bookingId: uuid('booking_id').notNull(),
+  senderId: uuid('sender_id').notNull(),
+  body: text('body').notNull(),
   createdAt: ts('created_at').notNull().defaultNow(),
 });
 

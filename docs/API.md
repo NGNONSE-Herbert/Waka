@@ -50,6 +50,10 @@
 | `disputes.detail` | `GET /v1/disputes/:id` | Utilisateur connecté (contrôle de propriété) |
 | `disputes.evidence` | `POST /v1/disputes/:id/evidence` | Utilisateur connecté (contrôle de propriété) |
 | `disputes.appeal` | `POST /v1/disputes/:id/appeal` | Utilisateur connecté (contrôle de propriété) |
+| `messages.thread` | `GET /v1/bookings/:id/messages` | Passager ou conducteur de la réservation |
+| `messages.send` | `POST /v1/bookings/:id/messages` | Passager ou conducteur ; liens, numéros et paiements hors plateforme refusés (`MESSAGE_BLOCKED`, 422) |
+| `notifications.list` | `GET /v1/me/notifications` | Utilisateur connecté, ses seules notifications |
+| `notifications.markRead` | `POST /v1/me/notifications/read` | Utilisateur connecté |
 | `webhooks.payments` | `POST /v1/webhooks/payments/:provider` | PSP — signature HMAC obligatoire |
 | `dev.mockPspComplete` | `POST /v1/dev/mock-psp/:providerRef/complete` | Développement uniquement (absent en production) |
 | `admin.login` | `POST /v1/admin/auth/login` | Staff (session admin + MFA + permission) |
