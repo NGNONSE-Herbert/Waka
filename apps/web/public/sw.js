@@ -4,7 +4,7 @@
  * Ne met JAMAIS en cache les réponses d’API (/api/*) : aucune donnée de réservation ou de paiement
  * ne peut être servie périmée. Hors connexion, les navigations retombent sur /hors-ligne.
  */
-const VERSION = 'waka-shell-v1';
+const VERSION = 'waka-shell-v2';
 const SHELL = ['/hors-ligne', '/manifest.webmanifest', '/icon.svg', '/icons/icon-192.png'];
 
 self.addEventListener('install', (event) => {

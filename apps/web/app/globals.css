@@ -1,46 +1,48 @@
 @import 'tailwindcss';
 
 /*
- * Waka — « confiance chaleureuse ».
- * Contraste vérifié (WCAG AA) : le vert de marque #0E8F83 n’est utilisé en texte que sur fond nuit ;
- * sur fond ivoire, le texte vert utilise green-600 (#0B7A70, 4,9:1) ou green-700.
+ * Waka — design « Canopée, plein jour en forêt ».
+ * Les noms de jetons (night, green, amber) sont conservés pour toutes les pages :
+ * night = forêt, green = feuillage, amber = citron vert.
+ * Contraste (WCAG AA) : le citron n'est utilisé en texte que sur fond forêt ;
+ * sur fond clair, le texte vert utilise green-600 (#1F7A4C) ou green-700.
  */
 @theme {
-  --font-display: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
 
-  --color-night-950: #0b1622;
-  --color-night-900: #142436;
-  --color-night-800: #1c3248;
-  --color-night-700: #27425d;
-  --color-night-600: #375674;
-  --color-night-300: #9fb3c7;
-  --color-night-200: #c9d6e2;
+  --color-night-950: #0b1f17;
+  --color-night-900: #123a2a;
+  --color-night-800: #1a5239;
+  --color-night-700: #24634a;
+  --color-night-600: #3d5346;
+  --color-night-300: #bfd6ba;
+  --color-night-200: #d6e6d2;
 
-  --color-green-50: #e8f6f4;
-  --color-green-100: #cdebe6;
-  --color-green-200: #a3dad2;
-  --color-green-300: #6cc5bb;
-  --color-green-400: #2fa99c;
-  --color-green-500: #0e8f83;
-  --color-green-600: #0b7a70;
-  --color-green-700: #09655d;
-  --color-green-900: #053b37;
+  --color-green-50: #e4efdd;
+  --color-green-100: #d7e3d0;
+  --color-green-200: #b9cdb4;
+  --color-green-300: #a9d49b;
+  --color-green-400: #58b368;
+  --color-green-500: #1f7a4c;
+  --color-green-600: #1f7a4c;
+  --color-green-700: #1a5239;
+  --color-green-900: #123a2a;
 
-  --color-amber-50: #fef7e6;
-  --color-amber-100: #fdecc4;
-  --color-amber-200: #fadc94;
-  --color-amber-300: #f8cd6c;
-  --color-amber-400: #f5b942;
-  --color-amber-500: #e3a21f;
-  --color-amber-700: #8a5d06;
-  --color-amber-800: #6b4805;
+  --color-amber-50: #f6fbdd;
+  --color-amber-100: #edf7be;
+  --color-amber-200: #e3f49c;
+  --color-amber-300: #d9f27b;
+  --color-amber-400: #d9f27b;
+  --color-amber-500: #c4e04f;
+  --color-amber-700: #4f5f0d;
+  --color-amber-800: #3d4a0a;
 
-  --color-ivory: #f8faf8;
-  --color-sand: #f1efe7;
-  --color-line: #e3e8e4;
-  --color-ink: #52606d;
-  --color-ink-soft: #66737f;
+  --color-ivory: #f3f7ee;
+  --color-sand: #e4efdd;
+  --color-line: #d7e3d0;
+  --color-ink: #3d5346;
+  --color-ink-soft: #4f6557;
 
   --color-danger: #b42318;
   --color-danger-50: #fef3f2;
@@ -49,18 +51,18 @@
   --radius-xl2: 1.25rem;
   --radius-xl3: 1.75rem;
 
-  --shadow-card: 0 1px 2px rgb(20 36 54 / 0.04), 0 8px 24px -12px rgb(20 36 54 / 0.12);
-  --shadow-lift: 0 2px 4px rgb(20 36 54 / 0.05), 0 18px 40px -18px rgb(20 36 54 / 0.28);
-  --shadow-glow: 0 0 0 1px rgb(245 185 66 / 0.35), 0 12px 40px -12px rgb(245 185 66 / 0.45);
+  --shadow-card: 0 1px 2px rgb(11 31 23 / 0.04), 0 8px 24px -12px rgb(11 31 23 / 0.14);
+  --shadow-lift: 0 2px 4px rgb(11 31 23 / 0.05), 0 30px 60px -30px rgb(11 31 23 / 0.35);
+  --shadow-glow: 0 0 0 1px rgb(217 242 123 / 0.35), 0 12px 40px -12px rgb(217 242 123 / 0.45);
 
-  --animate-fade-up: fade-up 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  --animate-fade-up: fade-up 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
   --animate-draw: draw 2.4s cubic-bezier(0.6, 0.1, 0.2, 1) both;
   --animate-pulse-soft: pulse-soft 2s ease-in-out infinite;
   --animate-shimmer: shimmer 1.6s linear infinite;
   --animate-travel: travel 6s cubic-bezier(0.5, 0, 0.5, 1) infinite;
 
   @keyframes fade-up {
-    from { opacity: 0; transform: translateY(12px); }
+    from { opacity: 0; transform: translateY(24px); }
     to { opacity: 1; transform: none; }
   }
   @keyframes draw {
@@ -89,7 +91,7 @@
   }
   body {
     background: var(--color-ivory);
-    color: var(--color-night-900);
+    color: var(--color-night-950);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     -webkit-tap-highlight-color: transparent;
@@ -101,14 +103,13 @@
     text-wrap: balance;
   }
   p { text-wrap: pretty; }
-  ::selection { background: var(--color-amber-200); color: var(--color-night-900); }
+  ::selection { background: var(--color-amber-200); color: var(--color-night-950); }
 
-  /* Anneau de focus ambre doublé de nuit : visible sur fond clair ET sombre (WCAG 2.2 — 2.4.11). */
+  /* Anneau de focus citron doublé de forêt : visible sur fond clair ET sombre (WCAG 2.2 — 2.4.11). */
   :focus-visible {
     outline: 3px solid var(--color-amber-400);
     outline-offset: 2px;
     box-shadow: 0 0 0 2px var(--color-night-900);
-    border-radius: 0.5rem;
   }
   [hidden] { display: none !important; }
   input[type='date']::-webkit-calendar-picker-indicator,
@@ -116,7 +117,7 @@
 }
 
 @layer components {
-  .container-w { width: 100%; max-width: 72rem; margin-inline: auto; padding-inline: 1rem; }
+  .container-w { width: 100%; max-width: 78rem; margin-inline: auto; padding-inline: 1rem; }
   @media (min-width: 640px) { .container-w { padding-inline: 1.5rem; } }
 
   .eyebrow {
@@ -129,7 +130,7 @@
   .tabular { font-variant-numeric: tabular-nums; }
 
   .skeleton {
-    background: linear-gradient(90deg, #e9eeea 0%, #f4f7f4 40%, #e9eeea 80%);
+    background: linear-gradient(90deg, #e4efdd 0%, #f3f7ee 40%, #e4efdd 80%);
     background-size: 200% 100%;
     animation: var(--animate-shimmer);
     border-radius: 0.75rem;
@@ -137,13 +138,13 @@
 
   /* Texture géométrique inspirée des motifs Ndop / toghu — abstraite, non copiée. */
   .pattern-ndop {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Cg fill='none' stroke='%23F5B942' stroke-opacity='.14' stroke-width='1.5'%3E%3Cpath d='M0 24 L12 12 L24 24 L12 36Z M24 24 L36 12 L48 24 L36 36Z'/%3E%3Ccircle cx='12' cy='24' r='2.5'/%3E%3Ccircle cx='36' cy='24' r='2.5'/%3E%3Cpath d='M0 0 H48 M0 48 H48' stroke-dasharray='3 5'/%3E%3C/g%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Cg fill='none' stroke='%23D9F27B' stroke-opacity='.1' stroke-width='1.5'%3E%3Cpath d='M0 24 L12 12 L24 24 L12 36Z M24 24 L36 12 L48 24 L36 36Z'/%3E%3Ccircle cx='12' cy='24' r='2.5'/%3E%3Ccircle cx='36' cy='24' r='2.5'/%3E%3Cpath d='M0 0 H48 M0 48 H48' stroke-dasharray='3 5'/%3E%3C/g%3E%3C/svg%3E");
   }
   .pattern-ndop-light {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Cg fill='none' stroke='%230E8F83' stroke-opacity='.09' stroke-width='1.5'%3E%3Cpath d='M0 24 L12 12 L24 24 L12 36Z M24 24 L36 12 L48 24 L36 36Z'/%3E%3Ccircle cx='12' cy='24' r='2.5'/%3E%3Ccircle cx='36' cy='24' r='2.5'/%3E%3C/g%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Cg fill='none' stroke='%231F7A4C' stroke-opacity='.09' stroke-width='1.5'%3E%3Cpath d='M0 24 L12 12 L24 24 L12 36Z M24 24 L36 12 L48 24 L36 36Z'/%3E%3Ccircle cx='12' cy='24' r='2.5'/%3E%3Ccircle cx='36' cy='24' r='2.5'/%3E%3C/g%3E%3C/svg%3E");
   }
   .pattern-dots {
-    background-image: radial-gradient(rgb(245 185 66 / 0.18) 1px, transparent 1px);
+    background-image: radial-gradient(rgb(217 242 123 / 0.18) 1px, transparent 1px);
     background-size: 18px 18px;
   }
 
@@ -178,6 +179,31 @@
 @keyframes ticker {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-3px); }
+}
+
+/* Vitrine Canopée : la forêt respire, la route avance, les sections montent au défilement. */
+@keyframes canopy-pop { from { opacity: 0; transform: scale(0.92); } to { opacity: 1; transform: none; } }
+@keyframes canopy-breathe { to { transform: scale(1.1); } }
+@keyframes canopy-bob { to { transform: translateY(-5px); } }
+@keyframes canopy-sway { from { transform: translateX(-4px); } to { transform: translateX(5px); } }
+@keyframes canopy-drift { from { transform: translateX(-22px); } to { transform: translateX(22px); } }
+@keyframes canopy-fly { from { transform: translate(-40px, 14px); } to { transform: translate(60px, -18px); } }
+@keyframes canopy-flow { to { stroke-dashoffset: -56; } }
+@keyframes canopy-rise { from { opacity: 0; transform: translateY(36px); } to { opacity: 1; transform: none; } }
+
+@media (prefers-reduced-motion: no-preference) {
+  .canopy-pop { animation: canopy-pop 1s cubic-bezier(0.2, 0.7, 0.2, 1) 0.2s both; }
+  .canopy-float { animation: fade-up 0.8s ease 1s both, canopy-bob 3.2s ease-in-out 1.8s infinite alternate; }
+  .canopy-sun { transform-box: fill-box; transform-origin: center; animation: canopy-breathe 4.5s ease-in-out infinite alternate; }
+  .canopy-bird { animation: canopy-fly 9s ease-in-out infinite alternate; }
+  .canopy-cloud { animation: canopy-drift 12s ease-in-out infinite alternate; }
+  .canopy-bob { animation: canopy-bob 5s ease-in-out infinite alternate; }
+  .canopy-bob-slow { animation: canopy-bob 6s ease-in-out 1s infinite alternate; }
+  .canopy-sway { animation: canopy-sway 4s ease-in-out infinite alternate; }
+  .canopy-flow { animation: canopy-flow 2s linear infinite; }
+  @supports (animation-timeline: view()) {
+    .canopy-reveal { animation: canopy-rise linear both; animation-timeline: view(); animation-range: entry 0% entry 80%; }
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

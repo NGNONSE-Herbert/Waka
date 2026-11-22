@@ -140,9 +140,9 @@ function TicketInner({ bookingId }: { bookingId: string }) {
                 </div>
                 <svg viewBox="0 0 120 40" className="h-10 w-20 sm:w-32" aria-hidden="true">
                   <path d="M4 30 C 40 30 60 8 116 10" fill="none" stroke="#375674" strokeWidth="6" strokeLinecap="round" />
-                  <path d="M4 30 C 40 30 60 8 116 10" fill="none" stroke="#F5B942" strokeWidth="1.5" strokeDasharray="3 5" />
-                  <circle cx="4" cy="30" r="4" fill="#0E8F83" />
-                  <circle cx="116" cy="10" r="4" fill="#F5B942" />
+                  <path d="M4 30 C 40 30 60 8 116 10" fill="none" stroke="#D9F27B" strokeWidth="1.5" strokeDasharray="3 5" />
+                  <circle cx="4" cy="30" r="4" fill="#1F7A4C" />
+                  <circle cx="116" cy="10" r="4" fill="#D9F27B" />
                 </svg>
                 <div className="text-right">
                   <p className="font-display text-4xl font-extrabold tracking-tight sm:text-5xl">{trip.destination.code}</p>

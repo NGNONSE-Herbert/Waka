@@ -99,7 +99,7 @@ export function PhoneSimulator({
                     type="button"
                     onClick={() => answer('SUCCEEDED')}
                     disabled={!!sending}
-                    className="min-h-11 rounded-xl bg-[#0b7a70] text-sm font-bold text-white transition hover:bg-[#09655d] disabled:opacity-50"
+                    className="min-h-11 rounded-xl bg-[#1F7A4C] text-sm font-bold text-white transition hover:bg-[#09655d] disabled:opacity-50"
                     data-testid="sim-approve"
                   >
                     {sending === 'SUCCEEDED' ? t.payment.simSending : t.payment.simApprove}

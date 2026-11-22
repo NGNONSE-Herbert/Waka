@@ -1,89 +1,54 @@
-/** Illustrations abstraites originales (SVG inline, sans image externe). */
-
-/** Corridor Douala → Yaoundé : une ligne fluide avec nœuds-villes, et un véhicule qui la parcourt. */
-export function CorridorHero({ className, fromLabel, toLabel, midLabel }: { className?: string; fromLabel: string; toLabel: string; midLabel: string }) {
-  const d = 'M40 300 C 140 300 150 190 250 180 S 360 90 470 70';
+/** Illustrations de la vitrine Canopée : SVG originaux, décoratifs, animés seulement si le système l'autorise. */
+export function CanopyHero() {
   return (
-    <svg viewBox="0 0 520 360" className={className} aria-hidden="true">
-      <defs>
-        <linearGradient id="road" x1="0" x2="1" y1="1" y2="0">
-          <stop offset="0" stopColor="#0E8F83" />
-          <stop offset="1" stopColor="#F5B942" />
-        </linearGradient>
-        <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
-          <stop offset="0" stopColor="#F5B942" stopOpacity="0.45" />
-          <stop offset="1" stopColor="#F5B942" stopOpacity="0" />
-        </radialGradient>
-      </defs>
-      {/* topographie */}
-      <g fill="none" stroke="#9fb3c7" strokeOpacity="0.12">
-        <path d="M0 250 C 120 230 200 280 320 250 S 480 200 520 210" />
-        <path d="M0 210 C 110 190 210 240 330 210 S 470 150 520 160" />
-        <path d="M0 330 C 130 310 230 350 360 320 S 480 290 520 300" />
-        <path d="M0 120 C 120 110 220 150 330 120 S 460 70 520 80" />
+    <svg aria-hidden="true" viewBox="0 0 560 600" preserveAspectRatio="xMidYMax slice" className="block h-full w-full">
+      <rect width="560" height="600" fill="#E1F0D9" />
+      <circle className="canopy-sun" cx="392" cy="176" r="66" fill="#D9F27B" />
+      <path className="canopy-bird" d="M300 214 q10 -10 20 0 q10 -10 20 0 M246 246 q7 -7 14 0 q7 -7 14 0" stroke="#123A2A" strokeWidth="3" strokeLinecap="round" fill="none" />
+      <path d="M0 330 C80 290 150 280 230 310 C310 340 380 280 460 292 C510 300 540 310 560 306 L560 600 L0 600 Z" fill="#A9D49B" />
+      <rect className="canopy-cloud" x="40" y="338" width="300" height="10" rx="5" fill="#FFFFFF" opacity=".55" />
+      <rect className="canopy-cloud" x="250" y="362" width="270" height="8" rx="4" fill="#FFFFFF" opacity=".45" />
+      <g className="canopy-bob" fill="#58B368">
+        <circle cx="40" cy="432" r="70" /><circle cx="130" cy="412" r="62" /><circle cx="222" cy="436" r="74" /><circle cx="322" cy="416" r="66" />
+        <circle cx="412" cy="434" r="72" /><circle cx="502" cy="418" r="64" /><circle cx="566" cy="442" r="60" /><rect y="436" width="560" height="164" />
       </g>
-      {/* ruban de route */}
-      <path d={d} fill="none" stroke="#27425d" strokeWidth="22" strokeLinecap="round" />
-      <path d={d} fill="none" stroke="url(#road)" strokeWidth="4" strokeLinecap="round" className="route-draw" style={{ ['--len' as string]: 560 }} />
-      <path d={d} fill="none" stroke="#F8FAF8" strokeOpacity="0.5" strokeWidth="1.5" strokeDasharray="6 10" />
-      {/* nœuds */}
-      <circle cx="40" cy="300" r="40" fill="url(#glow)" />
-      <circle cx="470" cy="70" r="46" fill="url(#glow)" />
-      <g>
-        <circle cx="40" cy="300" r="11" fill="#142436" stroke="#0E8F83" strokeWidth="4" />
-        <circle cx="250" cy="180" r="6" fill="#142436" stroke="#9fb3c7" strokeWidth="3" />
-        <circle cx="470" cy="70" r="11" fill="#142436" stroke="#F5B942" strokeWidth="4" />
+      <path d="M170 424 V330 M392 430 V352 M290 416 V366" stroke="#123A2A" strokeWidth="5" strokeLinecap="round" />
+      <g className="canopy-sway" fill="#1F7A4C">
+        <ellipse cx="170" cy="320" rx="62" ry="24" /><ellipse cx="392" cy="342" rx="50" ry="20" /><ellipse cx="290" cy="360" rx="34" ry="14" />
       </g>
-      <g fontFamily="var(--font-manrope), sans-serif" fontWeight="800" fill="#F8FAF8">
-        <text x="62" y="328" fontSize="20">{fromLabel}</text>
-        <text x="266" y="206" fontSize="13" fill="#9fb3c7" fontWeight="600">{midLabel}</text>
-        <text x="400" y="38" fontSize="20">{toLabel}</text>
+      <g className="canopy-bob-slow" fill="#1F7A4C">
+        <circle cx="0" cy="532" r="84" /><circle cx="100" cy="502" r="70" /><circle cx="200" cy="538" r="86" /><circle cx="310" cy="510" r="74" />
+        <circle cx="420" cy="536" r="84" /><circle cx="530" cy="508" r="76" /><rect y="540" width="560" height="60" />
       </g>
-      {/* véhicule en mouvement */}
-      <g style={{ offsetPath: `path('${d}')`, animation: 'var(--animate-travel)', offsetRotate: 'auto' } as React.CSSProperties}>
-        <rect x="-12" y="-7" width="24" height="14" rx="5" fill="#F5B942" />
-        <rect x="2" y="-5" width="6" height="10" rx="2" fill="#142436" opacity="0.6" />
+      <path className="canopy-flow" d="M70 500 C150 460 220 500 300 470 C380 440 430 480 500 450" stroke="#D9F27B" strokeWidth="5" strokeLinecap="round" strokeDasharray="1 13" fill="none" />
+      <circle cx="70" cy="500" r="8" fill="#123A2A" stroke="#D9F27B" strokeWidth="4" />
+      <circle cx="500" cy="450" r="10" fill="#D9F27B" />
+      <g fill="#123A2A">
+        <circle cx="60" cy="600" r="72" /><circle cx="190" cy="612" r="66" /><circle cx="330" cy="606" r="76" /><circle cx="470" cy="614" r="72" /><circle cx="570" cy="596" r="56" />
       </g>
     </svg>
   );
 }
 
-/** Ruban de route décoratif (séparateurs, cartes). */
-export function RoadRibbon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 400 60" preserveAspectRatio="none" className={className} aria-hidden="true">
-      <path d="M0 40 C 80 10 140 55 220 30 S 340 5 400 25" fill="none" stroke="currentColor" strokeWidth="10" strokeLinecap="round" opacity="0.18" />
-      <path d="M0 40 C 80 10 140 55 220 30 S 340 5 400 25" fill="none" stroke="#F5B942" strokeWidth="1.5" strokeDasharray="5 7" />
-    </svg>
-  );
-}
-
-/** Mini-carte de corridor pour les cartes « trajets populaires ». Courbure dérivée d’une graine. */
-export function MiniCorridor({ seed, className }: { seed: number; className?: string }) {
-  const c1 = 20 + ((seed * 37) % 40);
-  const c2 = 20 + ((seed * 53) % 40);
-  const d = `M14 66 C 70 ${c1 + 30}, 110 ${c2}, 186 18`;
-  return (
-    <svg viewBox="0 0 200 84" className={className} aria-hidden="true">
-      <path d={d} fill="none" stroke="#142436" strokeOpacity="0.08" strokeWidth="14" strokeLinecap="round" />
-      <path d={d} fill="none" stroke="#0E8F83" strokeWidth="3" strokeLinecap="round" />
-      <path d={d} fill="none" stroke="#F5B942" strokeWidth="1.2" strokeDasharray="3 5" />
-      <circle cx="14" cy="66" r="6" fill="#F8FAF8" stroke="#0E8F83" strokeWidth="3" />
-      <circle cx="186" cy="18" r="6" fill="#F5B942" stroke="#142436" strokeWidth="2.5" />
-    </svg>
-  );
-}
-
-/** Illustration d’état vide : route qui s’arrête avant un horizon. */
 export function EmptyRoad({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 220 140" className={className} aria-hidden="true">
-      <circle cx="160" cy="44" r="22" fill="#FDECC4" />
-      <path d="M0 104 H220" stroke="#E3E8E4" strokeWidth="2" />
-      <path d="M20 132 C 70 120 90 110 130 104" fill="none" stroke="#CDEBE6" strokeWidth="16" strokeLinecap="round" />
-      <path d="M20 132 C 70 120 90 110 130 104" fill="none" stroke="#0E8F83" strokeWidth="2" strokeDasharray="5 7" />
-      <circle cx="132" cy="104" r="5" fill="#F5B942" />
-      <path d="M40 60 l10 -18 l10 18z M64 60 l14 -26 l14 26z" fill="#C9D6E2" opacity="0.7" />
+      <circle cx="160" cy="44" r="22" fill="#D9F27B" />
+      <path d="M0 104 H220" stroke="#D7E3D0" strokeWidth="2" />
+      <path d="M20 132 C 70 120 90 110 130 104" fill="none" stroke="#E4EFDD" strokeWidth="16" strokeLinecap="round" />
+      <path d="M20 132 C 70 120 90 110 130 104" fill="none" stroke="#1F7A4C" strokeWidth="2" strokeDasharray="5 7" />
+      <circle cx="132" cy="104" r="5" fill="#123A2A" />
+      <path d="M40 60 l10 -18 l10 18z M64 60 l14 -26 l14 26z" fill="#A9D49B" opacity="0.7" />
+    </svg>
+  );
+}
+
+export function CanopyCorner({ className }: { className?: string }) {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 400 160" className={className}>
+      <g fill="#1A5239">
+        <circle cx="60" cy="150" r="60" /><circle cx="160" cy="130" r="70" /><circle cx="270" cy="150" r="76" /><circle cx="370" cy="120" r="80" />
+      </g>
     </svg>
   );
 }

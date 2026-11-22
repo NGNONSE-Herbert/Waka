@@ -500,7 +500,7 @@ function ConfirmedView({ bookingId }: { bookingId: string }) {
       <div className="relative grid h-24 w-24 place-items-center">
         <span className="absolute inset-0 animate-[pulse-soft_2s_ease-in-out_infinite] rounded-full bg-green-100" aria-hidden="true" />
         <svg viewBox="0 0 52 52" className="relative h-20 w-20" aria-hidden="true">
-          <circle cx="26" cy="26" r="24" fill="#0B7A70" />
+          <circle cx="26" cy="26" r="24" fill="#1F7A4C" />
           <path d="M15 27l7 7 15-16" fill="none" stroke="#fff" strokeWidth="4.5" strokeLinecap="round" strokeLinejoin="round" className="route-draw" style={{ ['--len' as string]: 40 }} />
         </svg>
       </div>

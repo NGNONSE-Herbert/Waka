@@ -84,7 +84,8 @@ docs/                PRD, architecture, sécurité, flux de paiement, litiges, d
 | Rapprochement PSP ↔ grand livre | ✅ | ✅ | Relevé simulé | Format du relevé PSP | Adapter au format réel |
 | Console admin : RBAC, MFA, audit chaîné | ✅ | ✅ | TOTP affiché en démo | — | Clés matérielles (WebAuthn) pour la finance |
 | PWA, FR/EN, mobile 360 px | ✅ | Partiel | — | — | Audit d'accessibilité automatisé et tests sur Android d'entrée de gamme |
-| Messagerie modérée (FR-19) | ❌ | — | — | — | P1 |
+| Messagerie antifraude (FR-19) | ✅ API et mobile | ✅ | — | — | Ajouter la messagerie au site web |
+| Application mobile Expo (`apps/mobile`) | ✅ | Parcours vérifiés | PSP MOCK | Notifications push | Tests sur plusieurs appareils Android |
 
 ## Limites connues (honnêtes)
 

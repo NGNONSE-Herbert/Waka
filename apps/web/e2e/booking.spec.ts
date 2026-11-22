@@ -17,10 +17,10 @@ test.beforeAll(async ({ request }) => {
 test('recherche → réservation → paiement MOCK → billet confirmé', async ({ page }) => {
   // 1. Accueil → recherche Douala → Yaoundé
   await page.goto('/');
-  await expect(page.getByRole('heading', { level: 1 })).toContainText('Vous allez');
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('Le bon trajet');
   await page.locator('#h-from').selectOption('DLA');
   await page.locator('#h-to').selectOption('YDE');
-  await page.getByRole('button', { name: /Voir les trajets/ }).click();
+  await page.getByRole('button', { name: /Trouver un trajet/ }).click();
   await expect(page).toHaveURL(/\/recherche\?from=DLA&to=YDE/);
 
   // 2. Premier trajet non complet

@@ -21,7 +21,7 @@ export function ScoreRing({ score, label }: { score: number; label: string }) {
   const r = 26;
   const c = 2 * Math.PI * r;
   const s = Math.max(0, Math.min(100, Math.round(score)));
-  const color = s >= 75 ? '#0B7A70' : s >= 50 ? '#E3A21F' : '#9fb3c7';
+  const color = s >= 75 ? '#1F7A4C' : s >= 50 ? '#E3A21F' : '#9fb3c7';
   return (
     <div className="relative grid h-20 w-20 shrink-0 place-items-center" role="img" aria-label={label}>
       <svg viewBox="0 0 64 64" className="absolute inset-0 -rotate-90" aria-hidden="true">

@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import * as DM from '@radix-ui/react-dropdown-menu';
-import { CarFront, ChevronDown, LogOut, Search, Ticket, User, Wallet, Globe, PlusCircle, Home } from 'lucide-react';
+import { CarFront, ChevronDown, LogOut, Ticket, User, Wallet, PlusCircle, Home } from 'lucide-react';
 import { useTransition } from 'react';
 import { useI18n } from '@/lib/i18n/client';
 import { LOCALE_COOKIE, type Locale } from '@/lib/i18n/config';
@@ -26,13 +26,12 @@ export function LangSwitch({ tone = 'light', className }: { tone?: 'light' | 'da
       role="group"
       aria-label={t.nav.language}
       className={cn(
-        'inline-flex items-center rounded-2xl p-1 text-xs font-bold',
-        tone === 'dark' ? 'bg-white/10 text-ivory' : 'bg-sand text-night-800',
+        'inline-flex items-center rounded-full p-1 text-[0.8125rem] font-semibold',
+        tone === 'dark' ? 'bg-white/10 text-ivory' : 'text-night-900 ring-1 ring-inset ring-green-200',
         pending && 'opacity-60',
         className,
       )}
     >
-      <Globe className="mx-1.5 h-4 w-4 opacity-70" aria-hidden="true" />
       {(['fr', 'en'] as const).map((l) => (
         <button
           key={l}
@@ -41,8 +40,8 @@ export function LangSwitch({ tone = 'light', className }: { tone?: 'light' | 'da
           aria-pressed={locale === l}
           onClick={() => set(l)}
           className={cn(
-            'min-h-9 min-w-10 rounded-xl px-2 uppercase transition',
-            locale === l ? (tone === 'dark' ? 'bg-amber-400 text-night-900' : 'bg-white text-night-900 shadow-sm') : 'opacity-75 hover:opacity-100',
+            'min-h-9 min-w-10 rounded-full px-2 uppercase transition',
+            locale === l ? (tone === 'dark' ? 'bg-amber-400 text-night-950' : 'bg-night-900 text-white') : 'opacity-80 hover:opacity-100',
           )}
         >
           {l}
@@ -61,8 +60,7 @@ export function AccountMenu() {
   if (status === 'loading') return <div className="skeleton h-11 w-11 rounded-2xl" aria-hidden="true" />;
   if (!me) {
     return (
-      <Link href={loginHref(pathname)} className={buttonClass('dark', 'sm', 'whitespace-nowrap')}>
-        <User className="h-4 w-4" aria-hidden="true" />
+      <Link href={loginHref(pathname)} className={buttonClass('secondary', 'sm', 'whitespace-nowrap')}>
         {t.common.signIn}
       </Link>
     );
@@ -130,7 +128,7 @@ export function BottomNav() {
   return (
     <nav
       aria-label={t.nav.mainNav}
-      className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-white/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden"
+      className="fixed inset-x-0 bottom-0 z-40 bg-night-950 pb-[env(safe-area-inset-bottom)] md:hidden"
     >
       <ul className="mx-auto grid max-w-md grid-cols-4">
         {items.map(({ href, label, icon: Icon, match }) => {
@@ -140,9 +138,9 @@ export function BottomNav() {
               <Link
                 href={href}
                 aria-current={active ? 'page' : undefined}
-                className={cn('flex min-h-16 flex-col items-center justify-center gap-1 text-[0.7rem] font-semibold transition', active ? 'text-green-700' : 'text-ink')}
+                className={cn('flex min-h-16 flex-col items-center justify-center gap-1 text-[0.7rem] font-semibold transition', active ? 'text-amber-400' : 'text-night-200')}
               >
-                <span className={cn('grid h-8 w-12 place-items-center rounded-full transition', active && 'bg-green-50')}>
+                <span className={cn('grid h-8 w-12 place-items-center rounded-full transition', active && 'bg-amber-400 text-night-950')}>
                   <Icon className="h-5 w-5" aria-hidden="true" strokeWidth={active ? 2.4 : 2} />
                 </span>
                 {label}
@@ -160,22 +158,27 @@ export function HeaderNavLinks() {
   const pathname = usePathname();
   const { me } = useSession();
   const link = (active: boolean) =>
-    cn('inline-flex min-h-11 items-center gap-2 rounded-xl px-3 text-sm font-semibold transition', active ? 'text-green-700' : 'text-night-800 hover:text-green-700');
+    cn('inline-flex min-h-11 items-center whitespace-nowrap rounded-full px-2 text-[0.9375rem] font-semibold transition lg:px-3 lg:text-base', active ? 'text-green-600' : 'text-night-900 hover:text-green-600');
+  const offerHref = me?.canPublishTrips ? '/conducteur/publier' : '/conducteur';
   return (
-    <nav aria-label={t.nav.mainNav} className="hidden items-center gap-1 md:flex">
+    <nav aria-label={t.nav.mainNav} className="hidden items-center gap-1 md:flex lg:gap-3">
       <Link href="/recherche" className={link(pathname.startsWith('/recherche'))} aria-current={pathname.startsWith('/recherche') ? 'page' : undefined}>
-        <Search className="h-4 w-4" aria-hidden="true" />
         {t.nav.findTrip}
       </Link>
       {me && (
         <Link href="/mes-trajets" className={link(pathname.startsWith('/mes-trajets'))} aria-current={pathname.startsWith('/mes-trajets') ? 'page' : undefined}>
-          <Ticket className="h-4 w-4" aria-hidden="true" />
           {t.nav.myTrips}
         </Link>
       )}
-      <Link href={me?.canPublishTrips ? '/conducteur/publier' : '/conducteur'} className={cn(buttonClass('secondary', 'sm'), 'ml-2')}>
-        <PlusCircle className="h-4 w-4 text-green-600" aria-hidden="true" />
+      <Link href={offerHref} className={link(pathname.startsWith('/conducteur'))} aria-current={pathname.startsWith('/conducteur') ? 'page' : undefined}>
         {t.nav.offerSeats}
+      </Link>
+      <Link
+        href="/paiement-protege"
+        className={cn(link(pathname.startsWith('/paiement-protege')), 'hidden lg:inline-flex')}
+        aria-current={pathname.startsWith('/paiement-protege') ? 'page' : undefined}
+      >
+        {t.footer.protectedPayment}
       </Link>
     </nav>
   );

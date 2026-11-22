@@ -27,7 +27,7 @@ export function RouteLine({
       <div className={cn('tabular text-right font-display font-extrabold text-night-900', big ? 'text-xl' : 'text-lg')}>{time(trip.departureAt, locale)}</div>
       <div className="flex flex-col items-center pt-1.5" aria-hidden="true">
         <span className="h-3 w-3 rounded-full border-[3px] border-green-600 bg-white" />
-        <span className="my-1 w-0.5 flex-1 bg-[repeating-linear-gradient(to_bottom,#0E8F83_0_4px,transparent_4px_8px)]" />
+        <span className="my-1 w-0.5 flex-1 bg-[repeating-linear-gradient(to_bottom,#1F7A4C_0_4px,transparent_4px_8px)]" />
       </div>
       <div className="min-w-0 pb-4">
         <p className={cn('font-display font-extrabold leading-tight text-night-900', big ? 'text-xl' : 'text-base')}>{trip.origin.name}</p>

@@ -23,7 +23,8 @@ export type DomainErrorCode =
   | 'VALIDATION_ERROR'
   | 'RATE_LIMITED'
   | 'INVALID_SIGNATURE'
-  | 'REPLAYED_EVENT';
+  | 'REPLAYED_EVENT'
+  | 'MESSAGE_BLOCKED';
 
 export class DomainError extends Error {
   readonly code: DomainErrorCode;
